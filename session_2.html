@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2차시 · 제미나이 기초 활용법 · 유성구청 실무교육</title>
+<style>
+  :root{
+    --brand:#5b8fd6;--brand-dark:#3f72bd;--brand-soft:#eef4fb;
+    --ink:#1f2937;--ink-soft:#6b7280;--line:#e5e7eb;--bg:#f7f8fa;--card:#ffffff;
+    --code-bg:#f3f4f6;--note:#eef4fb;--note-bd:#5b8fd6;--warn:#fff7ed;--warn-bd:#ea580c;
+    --tip:#fffbeb;--tip-bd:#d4a017;--ok:#16a34a;--nav-h:118px;--radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+  .header{padding:34px 0 26px;}
+  .header .logo{display:inline-block;font-weight:800;letter-spacing:-.5px;color:var(--brand-dark);font-size:15px;margin-bottom:14px;padding:5px 12px;background:var(--brand-soft);border-radius:999px;}
+  .header .eyebrow{color:var(--ink-soft);font-size:14px;font-weight:600;margin:0 0 6px;}
+  .header h1{margin:0 0 8px;font-size:30px;letter-spacing:-1px;line-height:1.25;}
+  .header .subtitle{margin:0 0 16px;color:var(--ink-soft);font-size:16px;}
+  .header .guide{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--brand-dark);background:var(--brand-soft);border:1px solid #dbe7f6;border-radius:8px;padding:8px 13px;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0;}
+  .nav-row.sub{padding-top:9px;border-top:1px dashed var(--line);}
+  .nav-btn{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:8px;transition:.15s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .nav-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .nav-btn.back{color:var(--ink-soft);}
+  .nav-divider{width:1px;height:20px;background:var(--line);margin:0 4px;}
+  .nav-label{font-size:12px;color:var(--ink-soft);font-weight:600;margin-right:4px;}
+  .anchor{text-decoration:none;font-size:13px;color:var(--ink-soft);padding:4px 10px;border-radius:6px;transition:.15s;}
+  .anchor:hover{background:var(--brand-soft);color:var(--brand-dark);}
+  main{padding:32px 0 60px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px;scroll-margin-top:calc(var(--nav-h) + 16px);}
+  .card > h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px;padding-bottom:12px;border-bottom:2px solid var(--line);}
+  .card > h2 .num{color:var(--brand);font-weight:800;margin-right:8px;}
+  .card > h3{font-size:15px;margin:20px 0 8px;color:var(--brand-dark);}
+  .card p{margin:0 0 14px;}.card p:last-child{margin-bottom:0;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .lead{font-size:15px;color:var(--ink-soft);margin:0 0 18px;}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0;}
+  .mcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .mcard .top{background:var(--brand-soft);padding:12px 16px;border-bottom:1px solid var(--line);}
+  .mcard .top b{font-size:16px;}.mcard .top .en{font-size:12px;color:var(--ink-soft);display:block;}
+  .mcard .body{padding:12px 16px;font-size:13.5px;color:var(--ink-soft);}
+  .prompt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;background:#fff;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border-bottom:1px solid var(--line);padding:9px 14px;}
+  .prompt-head .label{font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px;}
+  .prompt-head .label::before{content:"▶";color:var(--brand);font-size:10px;}
+  .copy-btn{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:var(--brand);border:none;padding:6px 14px;border-radius:7px;transition:.15s;}
+  .copy-btn:hover{background:var(--brand-dark);}.copy-btn.done{background:var(--ok);}
+  .prompt pre{margin:0;padding:16px 18px;background:var(--code-bg);font-family:"SFMono-Regular",Consolas,"D2Coding","Menlo",monospace;font-size:13.5px;line-height:1.7;color:#111827;white-space:pre-wrap;word-break:break-word;}
+  .box{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;}
+  .box .box-title{font-weight:700;margin-bottom:4px;display:block;}
+  .box.note{background:var(--note);border-left:4px solid var(--note-bd);}
+  .box.warn{background:var(--warn);border-left:4px solid var(--warn-bd);}
+  .box.tip{background:var(--tip);border-left:4px solid var(--tip-bd);}
+  .table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .table th,.table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .table thead th{background:var(--brand);color:#fff;font-weight:700;}
+  .table tbody tr:nth-child(even){background:#fafbfc;}
+  .table tbody tr:last-child td{border-bottom:none;}
+  .table td strong{color:var(--brand-dark);}
+  .steps{list-style:none;counter-reset:step;margin:16px 0;padding:0;}
+  .steps li{counter-increment:step;position:relative;padding:12px 0 12px 52px;border-bottom:1px solid var(--line);}
+  .steps li:last-child{border-bottom:none;}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:11px;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{display:block;font-size:15px;margin-bottom:2px;}.steps li span{color:var(--ink-soft);font-size:14px;}
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);background:#111827;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100;}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.header h1{font-size:24px;}.card{padding:22px 18px;}:root{--nav-h:150px;}}
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<header class="header">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <p class="eyebrow">실무교육 · 2차시 · 강사 김현경</p>
+    <h1>제미나이 기초 활용법</h1>
+    <p class="subtitle">7가지 핵심 기능으로 업무 시간 절반 줄이기</p>
+    <span class="guide">💡 실습 프롬프트는 복사 버튼으로 붙여넣으세요</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="nav-btn back" href="index.html">← 목록으로</a>
+      <span class="nav-divider"></span>
+      <a class="nav-btn" href="session_1.html">1차시</a>
+      <a class="nav-btn active" href="session_2.html">2차시</a>
+      <a class="nav-btn" href="session_3.html">3차시</a>
+      <a class="nav-btn" href="session_4.html">4차시</a>
+    </div>
+    <div class="nav-row sub">
+      <span class="nav-label">바로가기</span>
+      <a class="anchor" href="#model">모델 선택</a>
+      <a class="anchor" href="#custom">커스텀 설정</a>
+      <a class="anchor" href="#expert">전문가 관점</a>
+      <a class="anchor" href="#canvas">Canvas</a>
+      <a class="anchor" href="#research">딥리서치</a>
+      <a class="anchor" href="#guide">가이드 학습</a>
+      <a class="anchor" href="#music">AI 음악</a>
+      <a class="anchor" href="#media">이미지·영상</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- 모델 선택 -->
+    <section class="card" id="model">
+      <h2><span class="num">01</span>모델 선택하는 법</h2>
+      <p class="lead">일의 무게에 맞춰 골라 쓰자 — 5초 답을 5분 기다리거나, 5분 답을 5초로 끝내면 손해.</p>
+
+      <div class="grid3">
+        <div class="mcard"><div class="top"><b>빠른 모델</b><span class="en">Flash</span></div><div class="body">즉각적인 답변이 필요할 때 · 이메일 초안, 간단한 문구</div></div>
+        <div class="mcard"><div class="top"><b>사고 모델</b><span class="en">Thinking</span></div><div class="body">복잡·심층 작업에 유리 · 보고서 작성, 정책 분석, 논리 구조 잡기</div></div>
+        <div class="mcard"><div class="top"><b>프로 모델</b><span class="en">Pro</span></div><div class="body">수학·정밀 작업에 추천 · 데이터 분석, 수치 계산, 예산 시뮬레이션</div></div>
+      </div>
+
+      <h3>① 빠른 모델 예시</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">빠른 모델</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>민원인에게 보낼 안내 문자 3문장으로 써줘</pre>
+      </div>
+      <h3>② 사고 모델 예시</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">사고 모델</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>청년정책 활성화 방안 보고서 목차 단계별로 잡아줘</pre>
+      </div>
+      <h3>③ 프로 모델 예시</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">프로 모델</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>예산 5억 원으로 청년 일자리 사업 시뮬레이션 해줘</pre>
+      </div>
+    </section>
+
+    <!-- 커스텀 인스트럭션 -->
+    <section class="card" id="custom">
+      <h2><span class="num">02</span>개인 맞춤 설정 — 커스텀 인스트럭션</h2>
+      <p class="lead">한 번 설정하면 모든 대화에 자동 적용되는 '내 업무 비서' 만들기.</p>
+
+      <div class="box note">
+        <span class="box-title">📌 설정 위치</span>
+        <b>Gemini 설정 → 개인화 → 맞춤 안내</b> · 한 번 입력하면 새 대화마다 자동 적용, 언제든 수정 가능.
+      </div>
+
+      <h3>설정문 ① 전문가 관점 시스템 (E=n)</h3>
+      <p class="muted">아래 설정문을 '맞춤 안내'에 붙여넣으면, 프롬프트 끝에 <b>E=1 / E=2 / E=3</b>만 붙여 전문가 관점 답변을 받을 수 있습니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">커스텀 인스트럭션 · 전문가 관점</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>[역할 정의]
+사용자가 요청하는 주제에 대해
+최고 수준의 전문가 관점을 통합적으로 제시합니다.
+
+[지시사항]
+E=1, E=2 등 특별 요청 시 전문가 관점에서 답변
+· E=1: 상위 1% 권위자 1명
+· E=2: 서로 다른 관점 2명
+· E=3: 다양한 시각 3명
+
+[출력 형식]
+전문가 소개 / 핵심 답변 / 종합 결론</pre>
+      </div>
+
+      <h3>설정문 ② 거짓말 방지 규칙</h3>
+      <p class="muted">AI가 모르는 건 '모른다'고 말하게 하는 4줄 규칙 — 공무원 업무 필수. 1차시 '환각' 문제의 절반을 차단합니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">커스텀 인스트럭션 · 거짓말 방지</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>아래 규칙을 엄격히 준수해서 답변해주세요.
+
+1) 근거가 없어 불확실할 경우,
+   절대 지어내지 말고 "알 수 없습니다"라고 명시해주세요.
+
+2) 답변 전 정보를 검증하고, 출처가 불분명한 부분은
+   "확실하지 않음"이라고 표시해주세요.
+
+3) 확실한 정보만 사용하되, 추측이 불가피하면
+   "추측입니다"라고 밝혀주세요.
+
+4) 문의가 모호하면 먼저 맥락이나 세부 정보를 더 요청하세요.</pre>
+      </div>
+
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        공식 보고서·법령 인용 시에는 규칙을 설정했더라도 반드시 사람이 최종 검토하세요.
+      </div>
+    </section>
+
+    <!-- 전문가 관점 사용 -->
+    <section class="card" id="expert">
+      <h2><span class="num">03</span>활용 1 · 전문가 관점 시스템 (E=n)</h2>
+      <p class="lead">설정문을 넣었다면, 이제 프롬프트 끝에 <b>E=숫자</b>만 붙이면 됩니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">E=n 사용 예시</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>청년 주거 지원 정책 방향 조언해줘  E=2</pre>
+      </div>
+    </section>
+
+    <!-- Canvas -->
+    <section class="card" id="canvas">
+      <h2><span class="num">04</span>Canvas로 보고서·슬라이드 자동 생성</h2>
+      <p class="lead">채팅창 옆에 문서 편집창이 열리는 기능 — 일부 문단만 드래그해 부분 수정 가능.</p>
+
+      <h3>① 문서 생성</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">Canvas · 문서 생성</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>청년정책 활성화 방안 보고서 초안을 Canvas로 작성해줘.
+공공기관 보고서 형식으로</pre>
+      </div>
+
+      <h3>② 부분 수정 (문단 드래그 후)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">Canvas · 부분 수정</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>이 부분을 더 간결하게 줄여줘</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">Canvas · 어조 변경</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>어투를 더 공식적으로 바꿔줘</pre>
+      </div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">Canvas · 수치 추가</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>이 단락에 구체적인 수치를 추가해줘</pre>
+      </div>
+
+      <div class="box tip">
+        <span class="box-title">💡 Tip</span>
+        Canvas에서 완성한 문서는 Google 문서·슬라이드로 바로 내보내기 가능합니다.
+      </div>
+    </section>
+
+    <!-- 딥리서치 -->
+    <section class="card" id="research">
+      <h2><span class="num">05</span>딥리서치로 전문가 수준 자료 조사</h2>
+      <p class="lead">하나의 주제를 수십 개 소스 기반으로 심층 조사 — '사고 모델' 선택 권장, Google 문서로 바로 내보내기.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">딥리서치 · 정책 조사</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>전국 광역시·도 청년 1인 가구 주거 지원 정책 현황과
+유성구가 참고할 만한 우수 사례를 조사해줘.
+
+포함할 내용:
+· 시·도별 청년 주거 지원 제도 비교
+· 지원 대상·금액·신청 방법
+· 주요 성과와 한계점
+· 유성구 적용 가능 시사점</pre>
+      </div>
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        5~10분 대기 · 100개 이상 자료 종합 · 결과물은 반드시 출처 확인 후 사용.
+      </div>
+    </section>
+
+    <!-- 가이드 학습 -->
+    <section class="card" id="guide">
+      <h2><span class="num">06</span>가이드 학습 기능 활용법</h2>
+      <p class="lead">모르는 개념을 선생님과 대화하듯 — 단계별로 질문·퀴즈를 주고받으며 학습. (신규 부서 발령·새 사업 검토·자격증 준비)</p>
+
+      <h3>① 개념 학습</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">가이드 학습 · 개념 학습</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>지방자치단체 예산 편성 절차에 대해
+처음 배우는 사람에게 설명하듯
+단계별로 알려줘</pre>
+      </div>
+
+      <h3>② 이해도 점검</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">가이드 학습 · 이해도 점검</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>공문서 작성 규칙을 퀴즈로 테스트해줘.
+문제 하나씩 내줘</pre>
+      </div>
+    </section>
+
+    <!-- AI 음악 -->
+    <section class="card" id="music">
+      <h2><span class="num">07</span>말 한마디로 AI 음악 만들기</h2>
+      <p class="lead">원하는 스타일 선택 후 프롬프트 입력 → '빠른 모델'이 30초 분량 음악 자동 완성.</p>
+
+      <h3>① 구정 홍보 영상 배경음악 <span class="muted">(신뢰감·안정감)</span></h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">AI 음악 · 홍보 배경음악</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>유성구 홍보 영상에 쓸 밝고 신뢰감 있는 배경음악 만들어줘</pre>
+      </div>
+      <h3>② 직원 워크숍 오프닝 <span class="muted">(경쾌·활기참)</span></h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">AI 음악 · 워크숍 오프닝</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>직원 워크숍 시작에 어울리는 경쾌하고 활기찬 음악 만들어줘</pre>
+      </div>
+      <h3>③ 주민 캠페인 홍보용 <span class="muted">(따뜻·친근)</span></h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">AI 음악 · 캠페인 홍보</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>분리수거 캠페인 홍보에 쓸 따뜻하고 친근한 분위기 음악 만들어줘</pre>
+      </div>
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        외부 공개용은 저작권 정책 확인 필수 · 도구별 저작권 범위가 다릅니다.
+      </div>
+    </section>
+
+    <!-- 이미지·동영상 -->
+    <section class="card" id="media">
+      <h2><span class="num">08</span>이미지·동영상 생성까지 한번에</h2>
+      <p class="lead">Gemini 한 도구로 텍스트·이미지·영상까지 — 별도 도구 없이 일원화. (동영상은 유료 사용자 전용)</p>
+
+      <h3>① 이미지 생성</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">이미지 생성 · 홍보 포스터</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>유성구 청년 일자리 박람회 홍보 포스터.
+밝고 활기찬 분위기,
+다양한 청년들이 함께 미래를 향해 나아가는 장면</pre>
+      </div>
+
+      <h3>② 동영상 생성</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">동영상 생성 · 정책 홍보 영상</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>유성구 청년정책 홍보 영상.
+밝고 희망적인 분위기.
+청년의 꿈과 도전을 주제로.
+30초 분량</pre>
+      </div>
+
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        생성된 이미지·동영상은 반드시 사용 전 내용 검토 · 공식 자료 활용 시 저작권 확인.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · 제미나이 기초 활용법</strong> · 2차시 강의안 &nbsp;|&nbsp; 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+<div id="toast">복사되었습니다 ✓</div>
+
+<script>
+  function copyPrompt(btn){
+    const pre = btn.closest('.prompt').querySelector('pre');
+    const text = pre.textContent;
+    const onSuccess = () => {
+      btn.textContent = '✓ 복사됨';btn.classList.add('done');
+      const toast = document.getElementById('toast');toast.classList.add('show');
+      setTimeout(() => {btn.textContent='복사';btn.classList.remove('done');toast.classList.remove('show');},2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    } else { fallbackCopy(); }
+    function fallbackCopy(){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');onSuccess();}catch(e){alert('복사에 실패했습니다. 직접 선택해 복사해 주세요.');}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>
