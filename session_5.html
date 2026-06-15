@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5차시 · 정책 보고서 작성부터 PPT까지 · 유성구청 실무교육</title>
+<style>
+  :root{
+    --brand:#5b8fd6;--brand-dark:#3f72bd;--brand-soft:#eef4fb;
+    --ink:#1f2937;--ink-soft:#6b7280;--line:#e5e7eb;--bg:#f7f8fa;--card:#ffffff;
+    --code-bg:#f3f4f6;--note:#eef4fb;--note-bd:#5b8fd6;--warn:#fff7ed;--warn-bd:#ea580c;
+    --tip:#fffbeb;--tip-bd:#d4a017;--ok:#16a34a;--nav-h:118px;--radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+  .header{padding:34px 0 26px;}
+  .header .logo{display:inline-block;font-weight:800;letter-spacing:-.5px;color:var(--brand-dark);font-size:15px;margin-bottom:14px;padding:5px 12px;background:var(--brand-soft);border-radius:999px;}
+  .header .eyebrow{color:var(--ink-soft);font-size:14px;font-weight:600;margin:0 0 6px;}
+  .header h1{margin:0 0 8px;font-size:30px;letter-spacing:-1px;line-height:1.25;}
+  .header .subtitle{margin:0 0 16px;color:var(--ink-soft);font-size:16px;}
+  .header .guide{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--brand-dark);background:var(--brand-soft);border:1px solid #dbe7f6;border-radius:8px;padding:8px 13px;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0;}
+  .nav-row.sub{padding-top:9px;border-top:1px dashed var(--line);}
+  .nav-btn{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:8px;transition:.15s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .nav-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .nav-btn.back{color:var(--ink-soft);}
+  .nav-divider{width:1px;height:20px;background:var(--line);margin:0 4px;}
+  .nav-label{font-size:12px;color:var(--ink-soft);font-weight:600;margin-right:4px;}
+  .anchor{text-decoration:none;font-size:13px;color:var(--ink-soft);padding:4px 10px;border-radius:6px;transition:.15s;}
+  .anchor:hover{background:var(--brand-soft);color:var(--brand-dark);}
+  main{padding:32px 0 60px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px;scroll-margin-top:calc(var(--nav-h) + 16px);}
+  .card > h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px;padding-bottom:12px;border-bottom:2px solid var(--line);}
+  .card > h2 .num{color:var(--brand);font-weight:800;margin-right:8px;}
+  .card > h3{font-size:15px;margin:20px 0 8px;color:var(--brand-dark);}
+  .card p{margin:0 0 14px;}.card p:last-child{margin-bottom:0;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .lead{font-size:15px;color:var(--ink-soft);margin:0 0 18px;}
+  .phase{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--brand-dark);padding:3px 10px;border-radius:6px;margin-bottom:6px;letter-spacing:.3px;}
+  .prompt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;background:#fff;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border-bottom:1px solid var(--line);padding:9px 14px;}
+  .prompt-head .label{font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px;}
+  .prompt-head .label::before{content:"▶";color:var(--brand);font-size:10px;}
+  .copy-btn{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:var(--brand);border:none;padding:6px 14px;border-radius:7px;transition:.15s;}
+  .copy-btn:hover{background:var(--brand-dark);}.copy-btn.done{background:var(--ok);}
+  .prompt pre{margin:0;padding:16px 18px;background:var(--code-bg);font-family:"SFMono-Regular",Consolas,"D2Coding","Menlo",monospace;font-size:13.5px;line-height:1.7;color:#111827;white-space:pre-wrap;word-break:break-word;}
+  .box{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;}
+  .box .box-title{font-weight:700;margin-bottom:4px;display:block;}
+  .box.note{background:var(--note);border-left:4px solid var(--note-bd);}
+  .box.warn{background:var(--warn);border-left:4px solid var(--warn-bd);}
+  .box.tip{background:var(--tip);border-left:4px solid var(--tip-bd);}
+  .table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .table th,.table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .table thead th{background:var(--brand);color:#fff;font-weight:700;}
+  .table tbody tr:nth-child(even){background:#fafbfc;}
+  .table tbody tr:last-child td{border-bottom:none;}
+  .table td strong{color:var(--brand-dark);}
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);background:#111827;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100;}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.header h1{font-size:24px;}.card{padding:22px 18px;}:root{--nav-h:150px;}}
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<header class="header">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <p class="eyebrow">실무교육 · 5차시 · 강사 김현경</p>
+    <h1>정책 보고서 작성부터 PPT까지</h1>
+    <p class="subtitle">실습 주제 · 「대덕연구개발특구 입주기업 지원 활성화 방안」</p>
+    <span class="guide">💡 실습 프롬프트는 복사 버튼으로 붙여넣으세요</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="nav-btn back" href="index.html">← 목록으로</a>
+      <span class="nav-divider"></span>
+      <a class="nav-btn" href="session_1.html">1차시</a>
+      <a class="nav-btn" href="session_2.html">2차시</a>
+      <a class="nav-btn" href="session_3.html">3차시</a>
+      <a class="nav-btn" href="session_4.html">4차시</a>
+      <a class="nav-btn active" href="session_5.html">5차시</a>
+      <a class="nav-btn" href="session_6.html">6차시</a>
+      <a class="nav-btn" href="session_7.html">7차시</a>
+      <a class="nav-btn" href="session_8.html">8차시</a>
+    </div>
+    <div class="nav-row sub">
+      <span class="nav-label">바로가기</span>
+      <a class="anchor" href="#flow">작성 흐름</a>
+      <a class="anchor" href="#step1">Step1·사전검토</a>
+      <a class="anchor" href="#step2">Step2·심층조사</a>
+      <a class="anchor" href="#step3">Step3·초안작성</a>
+      <a class="anchor" href="#step4">Step4·비판적검토</a>
+      <a class="anchor" href="#convert">5종 변환</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- 작성 흐름 -->
+    <section class="card" id="flow">
+      <h2><span class="num">00</span>보고서 작성 4 Steps</h2>
+      <p class="lead">사전 검토 → 심층 조사 → 항목별 초안 → 비판적 검토. 완성한 보고서는 PPT·보도자료·SNS·카드뉴스 5종으로 변환합니다.</p>
+      <table class="table">
+        <thead><tr><th>단계</th><th>할 일</th><th>도구</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Step 1</strong></td><td>사전 검토 가이드 — 작성 전 체크리스트 받기</td><td>Gemini 일반</td></tr>
+          <tr><td><strong>Step 2</strong></td><td>심층 조사 — 한계점·사각지대·장애요인 분석</td><td>Deep Research</td></tr>
+          <tr><td><strong>Step 3</strong></td><td>보고서 초안 — 6개 섹션 항목별 작성 후 통합</td><td>Gemini 일반</td></tr>
+          <tr><td><strong>Step 4</strong></td><td>비판적 검토 — 약점·실패 원인·예상 질문 점검</td><td>Gemini 일반</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Step 1 -->
+    <section class="card" id="step1">
+      <span class="phase">STEP 1</span>
+      <h2><span class="num">01</span>사전 검토 가이드 받기</h2>
+      <p class="lead">보고서 쓰기 전, 무엇을 확인해야 하는지 AI에게 먼저 묻습니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">사전 검토 체크리스트</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>대덕연구개발특구 입주기업 지원 활성화 방안
+보고서를 쓰려고 해.
+실무자가 보고서 작성 전에 미리 검토해야 할
+체크리스트를 만들어줘.
+
+- 확인해야 할 통계·자료와 출처
+- 검토할 법령·기존 대책
+- 협의해야 할 부처·기관</pre>
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="card" id="step2">
+      <span class="phase">STEP 2</span>
+      <h2><span class="num">02</span>심층 조사 (Deep Research)</h2>
+      <p class="lead">입력창 → 도구 → Deep Research 선택(2~5분 자동 수집). 백그라운드로 돌려놓고 다음 Step 진행.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">심층 조사 (Deep Research)</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>「대덕연구개발특구 입주기업 지원 활성화 방안」에 대한
+심층 조사를 해줘.
+
+조사 관점:
+1) 한국 연구개발특구 지원 정책의 한계점과 사각지대
+2) 한국과 산업 구조가 유사한 국가의 R&D 클러스터 사례
+3) 한국 적용 시 예상되는 법·제도·예산상 장애요인
+4) 최근 2~3년 내 새롭게 등장한 정책 키워드</pre>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="card" id="step3">
+      <span class="phase">STEP 3</span>
+      <h2><span class="num">03</span>보고서 초안 작성 (항목별)</h2>
+      <p class="lead">6개 항목을 하나씩 작성하고 검토한 뒤, 마지막에 통합합니다.</p>
+
+      <h3>3-1 · 추진 배경 및 필요성</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">3-1 추진 배경 및 필요성</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>앞 조사 내용을 바탕으로
+「대덕연구개발특구 입주기업 지원 활성화 방안」 보고서의
+「1. 추진 배경 및 필요성」 부분만 작성해줘.
+
+- 왜 지금 이 정책이 필요한지 명확히
+- 최근 R&D 패러다임 변화·특구 입주기업 동향과 연결
+- 공문서 스타일, 3~4문단</pre>
+      </div>
+
+      <h3>3-2 · 현황 및 문제점</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">3-2 현황 및 문제점</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>「2. 현황 및 문제점」 부분을 작성해줘.
+
+- 기존 특구 지원 정책의 한계 짚기
+- 사각지대 (중소·창업기업, 행정 인허가 등) 명시
+- 문제점은 3가지로 구조화
+- 통계나 수치정보는 반드시 근거 링크를 하단에 첨부해줘</pre>
+      </div>
+
+      <h3>3-3 · 추진 방안 (3가지)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">3-3 추진 방안</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>「3. 추진 방안」 부분을 작성해줘.
+
+- 3가지 방안으로 구분
+- 각 방안마다 차별화 포인트 명시
+- 기존 대책과 무엇이 다른지 분명히</pre>
+      </div>
+
+      <h3>3-4 · 추진 일정 및 예산</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">3-4 추진 일정 및 예산</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>「4. 추진 일정 및 예산」 부분을 작성해줘.
+
+- 1~3년차 단계별 일정
+- 항목별 예산 규모 (개략적 범위로)
+- 표 형태로 정리</pre>
+      </div>
+
+      <h3>3-5 · 기대 효과</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">3-5 기대 효과</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>「5. 기대 효과」 부분을 작성해줘.
+
+- 정량적 효과 (수치 포함)
+- 정성적 효과 (사회적 가치)
+- 상사가 보고 만족할 수 있는 메시지</pre>
+      </div>
+
+      <h3>3-6 · 전체 통합</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">3-6 전체 통합</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>지금까지 작성한 내용을 모두 통합하여
+내용 누락없이 모두 포함해서
+하나의 보고서로 정리해줘.
+
+- 항목 간 흐름이 자연스럽게 연결되도록
+- 중복 내용은 정리
+- 보고용 최종본 형태</pre>
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="card" id="step4">
+      <span class="phase">STEP 4</span>
+      <h2><span class="num">04</span>비판적 검토</h2>
+      <p class="lead">자기 보고서의 약점은 자기가 못 본다 — AI에게 결재자 시선을 빌립니다. 결재 시 멘붕 방지용 사전 점검.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">비판적 검토</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>방금 작성한 보고서를
+상위 결재자·기획예산담당관 입장에서 비판적으로 검토해줘.
+
+확인할 것:
+- 논리적 약점 3가지
+- 실패할 수 있는 원인
+- 결재 시 예상 질문 5가지
+- 답변하기 어려울 만한 부분</pre>
+      </div>
+    </section>
+
+    <!-- 5종 변환 -->
+    <section class="card" id="convert">
+      <h2><span class="num">05</span>보고서 → 5종 변환</h2>
+      <p class="lead">완성한 보고서 하나로 PPT · 보도자료 · SNS 문구 · 카드뉴스를 한 번에 만듭니다.</p>
+
+      <h3>① PPT 구성안</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">PPT · 10슬라이드 구성안</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>위의 보고서를 부서 회의 발표용
+10슬라이드 PPT 구성안으로 제작해줘.
+전체적인 내용을 누락시키지 말고 모두 포함.</pre>
+      </div>
+
+      <h3>② Gemini Canvas로 PPT 자동 생성</h3>
+      <div class="box note">
+        <span class="box-title">🖱 진행 순서</span>
+        Canvas 모드 ON → 보고서 붙여넣기 → 아래 프롬프트로 슬라이드 구성 요청 → Google 슬라이드로 내보내기 → 색·로고 정리
+      </div>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">Canvas · 발표용 PPT</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>발표용 PPT로 만들어줘.</pre>
+      </div>
+
+      <h3>③ 보도자료 변환</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">보도자료 변환</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>아래 보고서를 언론 배포용 보도자료로 변환해줘.
+[보고서 전체 붙여넣기]
+
+조건:
+· A4 1장 분량
+· 구조 : 제목 / 리드문 / 본문 / 담당자 연락처
+· 제목 : 25자 이내, 핵심 수치 1개 포함
+· 리드문 : 5W1H가 한 단락 안에 들어가도록
+· 본문 : 추진 배경 → 핵심 방안 3가지 → 기대 효과 순서
+· 어투 : 일반 시민이 읽기 쉬운 문장</pre>
+      </div>
+
+      <h3>④ SNS 홍보 문구</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">SNS 홍보 문구</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>방금 만든 보도자료를 SNS 홍보 문구로 변환해줘.
+
+조건:
+· 인스타그램용 (3줄 이내)
+· 시민이 일상 언어로 이해할 수 있는 친근한 말투
+· 핵심 수치 1개 + 행동 유도 문장
+· 해시태그 5개 (#유성구청 #대덕특구 + 3개)
+· 이모지 사용 금지 (공공기관 톤 유지)</pre>
+      </div>
+
+      <h3>⑤ 카드뉴스 제작</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">카드뉴스 구성안</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>방금 만든 보도자료를 카드뉴스 구성안으로 만들어줘.
+
+조건:
+· 총 5장 구성
+· 1장(표지) → 3장(본문) → 1장(마무리·콜투액션) 순서
+· 각 카드 : 제목(10자 이내) + 핵심 문장 1~2개
+· 시각 요소 추천 (아이콘·그래프·인용구 등)
+· 마지막 카드는 「자세히 보기」 링크 안내</pre>
+      </div>
+
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        통계·수치·예산은 반드시 원문·근거 링크와 대조해 사람이 최종 확인하세요. 대외 배포 전 내부 결재 절차를 따릅니다.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · 정책 보고서 작성부터 PPT까지</strong> · 5차시 강의안 &nbsp;|&nbsp; 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+<div id="toast">복사되었습니다 ✓</div>
+
+<script>
+  function copyPrompt(btn){
+    const pre = btn.closest('.prompt').querySelector('pre');
+    const text = pre.textContent;
+    const onSuccess = () => {
+      btn.textContent = '✓ 복사됨';btn.classList.add('done');
+      const toast = document.getElementById('toast');toast.classList.add('show');
+      setTimeout(() => {btn.textContent='복사';btn.classList.remove('done');toast.classList.remove('show');},2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    } else { fallbackCopy(); }
+    function fallbackCopy(){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');onSuccess();}catch(e){alert('복사에 실패했습니다. 직접 선택해 복사해 주세요.');}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7차시 · 바이브코딩으로 업무 앱 만들기 · 유성구청 실무교육</title>
+<style>
+  :root{
+    --brand:#5b8fd6;--brand-dark:#3f72bd;--brand-soft:#eef4fb;
+    --ink:#1f2937;--ink-soft:#6b7280;--line:#e5e7eb;--bg:#f7f8fa;--card:#ffffff;
+    --code-bg:#f3f4f6;--note:#eef4fb;--note-bd:#5b8fd6;--warn:#fff7ed;--warn-bd:#ea580c;
+    --tip:#fffbeb;--tip-bd:#d4a017;--ok:#16a34a;--nav-h:118px;--radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+  .header{padding:34px 0 26px;}
+  .header .logo{display:inline-block;font-weight:800;letter-spacing:-.5px;color:var(--brand-dark);font-size:15px;margin-bottom:14px;padding:5px 12px;background:var(--brand-soft);border-radius:999px;}
+  .header .eyebrow{color:var(--ink-soft);font-size:14px;font-weight:600;margin:0 0 6px;}
+  .header h1{margin:0 0 8px;font-size:30px;letter-spacing:-1px;line-height:1.25;}
+  .header .subtitle{margin:0 0 16px;color:var(--ink-soft);font-size:16px;}
+  .header .guide{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--brand-dark);background:var(--brand-soft);border:1px solid #dbe7f6;border-radius:8px;padding:8px 13px;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0;}
+  .nav-row.sub{padding-top:9px;border-top:1px dashed var(--line);}
+  .nav-btn{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:8px;transition:.15s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .nav-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .nav-btn.back{color:var(--ink-soft);}
+  .nav-divider{width:1px;height:20px;background:var(--line);margin:0 4px;}
+  .nav-label{font-size:12px;color:var(--ink-soft);font-weight:600;margin-right:4px;}
+  .anchor{text-decoration:none;font-size:13px;color:var(--ink-soft);padding:4px 10px;border-radius:6px;transition:.15s;}
+  .anchor:hover{background:var(--brand-soft);color:var(--brand-dark);}
+  main{padding:32px 0 60px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px;scroll-margin-top:calc(var(--nav-h) + 16px);}
+  .card > h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px;padding-bottom:12px;border-bottom:2px solid var(--line);}
+  .card > h2 .num{color:var(--brand);font-weight:800;margin-right:8px;}
+  .card > h3{font-size:15px;margin:20px 0 8px;color:var(--brand-dark);}
+  .card p{margin:0 0 14px;}.card p:last-child{margin-bottom:0;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .lead{font-size:15px;color:var(--ink-soft);margin:0 0 18px;}
+  .phase{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--brand-dark);padding:3px 10px;border-radius:6px;margin-bottom:6px;letter-spacing:.3px;}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0;}
+  .mcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .mcard .top{background:var(--brand-soft);padding:12px 16px;border-bottom:1px solid var(--line);}
+  .mcard .top b{font-size:15px;}
+  .mcard .body{padding:12px 16px;font-size:13.5px;color:var(--ink-soft);}
+  .prompt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;background:#fff;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border-bottom:1px solid var(--line);padding:9px 14px;}
+  .prompt-head .label{font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px;}
+  .prompt-head .label::before{content:"▶";color:var(--brand);font-size:10px;}
+  .copy-btn{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:var(--brand);border:none;padding:6px 14px;border-radius:7px;transition:.15s;}
+  .copy-btn:hover{background:var(--brand-dark);}.copy-btn.done{background:var(--ok);}
+  .prompt pre{margin:0;padding:16px 18px;background:var(--code-bg);font-family:"SFMono-Regular",Consolas,"D2Coding","Menlo",monospace;font-size:13.5px;line-height:1.7;color:#111827;white-space:pre-wrap;word-break:break-word;}
+  .box{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;}
+  .box .box-title{font-weight:700;margin-bottom:4px;display:block;}
+  .box.note{background:var(--note);border-left:4px solid var(--note-bd);}
+  .box.warn{background:var(--warn);border-left:4px solid var(--warn-bd);}
+  .box.tip{background:var(--tip);border-left:4px solid var(--tip-bd);}
+  .table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .table th,.table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .table thead th{background:var(--brand);color:#fff;font-weight:700;}
+  .table tbody tr:nth-child(even){background:#fafbfc;}
+  .table tbody tr:last-child td{border-bottom:none;}
+  .table td strong{color:var(--brand-dark);}
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);background:#111827;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100;}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.header h1{font-size:24px;}.card{padding:22px 18px;}:root{--nav-h:150px;}}
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<header class="header">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <p class="eyebrow">실무교육 · 7차시 · 강사 김현경</p>
+    <h1>바이브코딩으로 업무 앱 만들기</h1>
+    <p class="subtitle">코딩 한 줄 몰라도 만든다 · Google AI Studio</p>
+    <span class="guide">💡 실습 프롬프트는 복사 버튼으로 붙여넣으세요</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="nav-btn back" href="index.html">← 목록으로</a>
+      <span class="nav-divider"></span>
+      <a class="nav-btn" href="session_1.html">1차시</a>
+      <a class="nav-btn" href="session_2.html">2차시</a>
+      <a class="nav-btn" href="session_3.html">3차시</a>
+      <a class="nav-btn" href="session_4.html">4차시</a>
+      <a class="nav-btn" href="session_5.html">5차시</a>
+      <a class="nav-btn" href="session_6.html">6차시</a>
+      <a class="nav-btn active" href="session_7.html">7차시</a>
+      <a class="nav-btn" href="session_8.html">8차시</a>
+    </div>
+    <div class="nav-row sub">
+      <span class="nav-label">바로가기</span>
+      <a class="anchor" href="#intro">바이브코딩이란</a>
+      <a class="anchor" href="#warmup">워밍업·게임</a>
+      <a class="anchor" href="#translator">음성번역기</a>
+      <a class="anchor" href="#qr">QR 생성기</a>
+      <a class="anchor" href="#pomodoro">뽀모도로</a>
+      <a class="anchor" href="#dept">부서 맞춤 앱</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- 바이브코딩이란 -->
+    <section class="card" id="intro">
+      <h2><span class="num">00</span>바이브코딩 vs 일반 개발</h2>
+      <p class="lead">한 문장으로 게임도, 업무 앱도 — 코딩 한 줄 몰라도 만듭니다.</p>
+      <table class="table">
+        <thead><tr><th>구분</th><th>일반 개발</th><th>바이브코딩</th></tr></thead>
+        <tbody>
+          <tr><td><strong>입력</strong></td><td>코드를 한 줄씩 작성</td><td>한국어 한 문장만 입력</td></tr>
+          <tr><td><strong>환경</strong></td><td>VS Code · 터미널 필요</td><td>브라우저만 있으면 OK</td></tr>
+          <tr><td><strong>시간</strong></td><td>완성까지 며칠~몇 주</td><td>3~10분이면 작동</td></tr>
+          <tr><td><strong>대상</strong></td><td>개발자만 가능</td><td>공무원도 OK</td></tr>
+        </tbody>
+      </table>
+      <div class="box note">
+        <span class="box-title">📌 Google AI Studio 한눈에</span>
+        <code>aistudio.google.com</code> · Google 계정으로 바로 시작. <b>한 문장 입력</b>(「○○ 앱 만들어줘」) → <b>브라우저만</b>(설치 불필요) → <b>즉시 공유</b>(URL 한 줄로 동료에게 전달).
+      </div>
+    </section>
+
+    <!-- 워밍업 게임 -->
+    <section class="card" id="warmup">
+      <span class="phase">워밍업</span>
+      <h2><span class="num">01</span>기억력 장보기 게임</h2>
+      <p class="lead">총 10문제 · 아이템 1초 → 4×4 배열에서 찾기. 즉석에서 타이핑 가능한 짧은 버전입니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">기억력 장보기 게임</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>기억력 장보기 게임 만들어줘.
+
+- 총 10문제 (1~5번은 1개, 6~10번은 2개 기억)
+- 기억할 아이템을 1초 보여주고 사라짐
+- 16개 장보기 품목(사과·바나나·우유 등)이 4×4로 나타나면
+  클릭해서 정답 맞히기
+- 정답·오답 표시 후 1초 뒤 자동으로 다음 문제
+- 끝나면 점수 + 「다시 하기」 버튼</pre>
+      </div>
+    </section>
+
+    <!-- 음성번역기 -->
+    <section class="card" id="translator">
+      <span class="phase">실습 1</span>
+      <h2><span class="num">02</span>5개국 음성번역기</h2>
+      <p class="lead">한국어 한 번 말하면 → 5개국어로 자동 번역 + 음성 출력. (외국인 민원 응대 · 국제 행사 통역 · 다문화 가정)</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">5개국 음성번역기</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>한국어로 말하면 5개 나라말로 동시에 번역해주는 앱을 만들어줘.
+
+기능:
+- 큰 「녹음 시작」 버튼을 누르면 마이크로 한국어를 받음
+- 말이 끝나면 자동으로 5개국 언어로 동시에 번역
+  (영어 · 베트남어 · 프랑스어 · 일본어 · 중국어)
+- 각 언어 옆에 「음성으로 듣기」 버튼 — 그 나라말로 읽어줌
+- 각 결과 옆에 「복사」 버튼 — 클릭하면 텍스트가 복사됨
+- 한국어 원본도 화면 위쪽에 같이 보여줌</pre>
+      </div>
+    </section>
+
+    <!-- QR 생성기 -->
+    <section class="card" id="qr">
+      <span class="phase">실습 2</span>
+      <h2><span class="num">03</span>QR코드 생성기</h2>
+      <p class="lead">입력 → QR → 인쇄용 다운로드 (2분이면 끝). (행사 포스터 · 민원실 안내문 · 정책 홍보물)</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">QR코드 생성기</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>주소나 글자를 입력하면 QR코드를 만들어주는 앱을 만들어줘.
+
+기능:
+- 입력칸에 주소(URL)나 글자를 넣고 「QR코드 만들기」 버튼 누르기
+- QR코드가 화면에 크게 표시됨
+- QR 코드에 올려준 이미지가 가운데 나오도록 해줘.
+- 다운로드 / 클립보드로 복사 기능 있어야함</pre>
+      </div>
+    </section>
+
+    <!-- 뽀모도로 -->
+    <section class="card" id="pomodoro">
+      <span class="phase">실습 3</span>
+      <h2><span class="num">04</span>뽀모도로 앱</h2>
+      <p class="lead">원형 타이머 · 10분 단위 설정 · 알림 · 멈춤 · 초기화.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">뽀모도로 앱</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>뽀모도로 앱을 만들고싶어.
+원형 타이머이고 시간을 10분단위로 설정할 수 있도록 해줘.
+시간을 설정하고 시작을 하면 시간이 줄어들고 0이 되면 알림을 해줘.
+멈춤기능, 초기화 기능이 있으면 좋겠어.</pre>
+      </div>
+    </section>
+
+    <!-- 부서 맞춤 앱 -->
+    <section class="card" id="dept">
+      <h2><span class="num">05</span>부서 맞춤 앱 — 즉시 쓸 아이디어</h2>
+      <p class="lead">본인 부서에 바로 쓸 앱 아이디어 1개를 골라 만들어 보세요.</p>
+      <table class="table">
+        <thead><tr><th>부서</th><th>추천 앱</th></tr></thead>
+        <tbody>
+          <tr><td><strong>종합민원실</strong></td><td>민원 답변 초안 작성기 · 외국인 응대용 음성번역기</td></tr>
+          <tr><td><strong>청년정책과</strong></td><td>청년정책 자격 자가진단 챗봇</td></tr>
+          <tr><td><strong>일자리경제과</strong></td><td>대덕특구 입주기업 신청 자격 자가진단</td></tr>
+          <tr><td><strong>홍보담당관</strong></td><td>보도자료 → SNS 변환 + QR 자동 생성</td></tr>
+          <tr><td><strong>전 부서 공통</strong></td><td>회의록 정리기 · 단위 변환기 · 일정 조율기</td></tr>
+        </tbody>
+      </table>
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        실습 앱에는 개인정보·대외비를 넣지 마세요. 업무 도입 전 보안·접근 권한 등 내부 규정을 확인합니다.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · 바이브코딩으로 업무 앱 만들기</strong> · 7차시 강의안 &nbsp;|&nbsp; 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+<div id="toast">복사되었습니다 ✓</div>
+
+<script>
+  function copyPrompt(btn){
+    const pre = btn.closest('.prompt').querySelector('pre');
+    const text = pre.textContent;
+    const onSuccess = () => {
+      btn.textContent = '✓ 복사됨';btn.classList.add('done');
+      const toast = document.getElementById('toast');toast.classList.add('show');
+      setTimeout(() => {btn.textContent='복사';btn.classList.remove('done');toast.classList.remove('show');},2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    } else { fallbackCopy(); }
+    function fallbackCopy(){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');onSuccess();}catch(e){alert('복사에 실패했습니다. 직접 선택해 복사해 주세요.');}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>

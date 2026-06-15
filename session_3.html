@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3차시 · NotebookLM 시작하기 · 유성구청 실무교육</title>
+<style>
+  :root{
+    --brand:#5b8fd6;--brand-dark:#3f72bd;--brand-soft:#eef4fb;
+    --ink:#1f2937;--ink-soft:#6b7280;--line:#e5e7eb;--bg:#f7f8fa;--card:#ffffff;
+    --code-bg:#f3f4f6;--note:#eef4fb;--note-bd:#5b8fd6;--warn:#fff7ed;--warn-bd:#ea580c;
+    --tip:#fffbeb;--tip-bd:#d4a017;--ok:#16a34a;--nav-h:118px;--radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+  .header{padding:34px 0 26px;}
+  .header .logo{display:inline-block;font-weight:800;letter-spacing:-.5px;color:var(--brand-dark);font-size:15px;margin-bottom:14px;padding:5px 12px;background:var(--brand-soft);border-radius:999px;}
+  .header .eyebrow{color:var(--ink-soft);font-size:14px;font-weight:600;margin:0 0 6px;}
+  .header h1{margin:0 0 8px;font-size:30px;letter-spacing:-1px;line-height:1.25;}
+  .header .subtitle{margin:0 0 16px;color:var(--ink-soft);font-size:16px;}
+  .header .guide{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--brand-dark);background:var(--brand-soft);border:1px solid #dbe7f6;border-radius:8px;padding:8px 13px;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0;}
+  .nav-row.sub{padding-top:9px;border-top:1px dashed var(--line);}
+  .nav-btn{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:8px;transition:.15s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .nav-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .nav-btn.back{color:var(--ink-soft);}
+  .nav-divider{width:1px;height:20px;background:var(--line);margin:0 4px;}
+  .nav-label{font-size:12px;color:var(--ink-soft);font-weight:600;margin-right:4px;}
+  .anchor{text-decoration:none;font-size:13px;color:var(--ink-soft);padding:4px 10px;border-radius:6px;transition:.15s;}
+  .anchor:hover{background:var(--brand-soft);color:var(--brand-dark);}
+  main{padding:32px 0 60px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px;scroll-margin-top:calc(var(--nav-h) + 16px);}
+  .card > h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px;padding-bottom:12px;border-bottom:2px solid var(--line);}
+  .card > h2 .num{color:var(--brand);font-weight:800;margin-right:8px;}
+  .card > h3{font-size:15px;margin:20px 0 8px;color:var(--brand-dark);}
+  .card p{margin:0 0 14px;}.card p:last-child{margin-bottom:0;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .lead{font-size:15px;color:var(--ink-soft);margin:0 0 18px;}
+  .phase{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--brand-dark);padding:3px 10px;border-radius:6px;margin-bottom:6px;letter-spacing:.3px;}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0;}
+  .mcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .mcard .top{background:var(--brand-soft);padding:12px 16px;border-bottom:1px solid var(--line);}
+  .mcard .top b{font-size:15px;}
+  .mcard .body{padding:12px 16px;font-size:13.5px;color:var(--ink-soft);}
+  .prompt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;background:#fff;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border-bottom:1px solid var(--line);padding:9px 14px;}
+  .prompt-head .label{font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px;}
+  .prompt-head .label::before{content:"▶";color:var(--brand);font-size:10px;}
+  .copy-btn{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:var(--brand);border:none;padding:6px 14px;border-radius:7px;transition:.15s;}
+  .copy-btn:hover{background:var(--brand-dark);}.copy-btn.done{background:var(--ok);}
+  .prompt pre{margin:0;padding:16px 18px;background:var(--code-bg);font-family:"SFMono-Regular",Consolas,"D2Coding","Menlo",monospace;font-size:13.5px;line-height:1.7;color:#111827;white-space:pre-wrap;word-break:break-word;}
+  .box{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;}
+  .box .box-title{font-weight:700;margin-bottom:4px;display:block;}
+  .box.note{background:var(--note);border-left:4px solid var(--note-bd);}
+  .box.warn{background:var(--warn);border-left:4px solid var(--warn-bd);}
+  .box.tip{background:var(--tip);border-left:4px solid var(--tip-bd);}
+  .answer{font-size:13px;color:var(--ink-soft);margin:6px 2px 0;}
+  .answer b{color:var(--brand-dark);}
+  .table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .table th,.table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .table thead th{background:var(--brand);color:#fff;font-weight:700;}
+  .table tbody tr:nth-child(even){background:#fafbfc;}
+  .table tbody tr:last-child td{border-bottom:none;}
+  .table td strong{color:var(--brand-dark);}
+  .steps{list-style:none;counter-reset:step;margin:16px 0;padding:0;}
+  .steps li{counter-increment:step;position:relative;padding:12px 0 12px 52px;border-bottom:1px solid var(--line);}
+  .steps li:last-child{border-bottom:none;}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:11px;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{display:block;font-size:15px;margin-bottom:2px;}.steps li span{color:var(--ink-soft);font-size:14px;}
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);background:#111827;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100;}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.header h1{font-size:24px;}.card{padding:22px 18px;}:root{--nav-h:150px;}}
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<header class="header">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <p class="eyebrow">실무교육 · 3차시 · 강사 김현경</p>
+    <h1>NotebookLM 시작하기</h1>
+    <p class="subtitle">내가 올린 자료만 보고 답하는 AI — 조례·매뉴얼 기반 출처 인용 챗봇</p>
+    <span class="guide">💡 실습 프롬프트는 복사 버튼으로 붙여넣으세요</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="nav-btn back" href="index.html">← 목록으로</a>
+      <span class="nav-divider"></span>
+      <a class="nav-btn" href="session_1.html">1차시</a>
+      <a class="nav-btn" href="session_2.html">2차시</a>
+      <a class="nav-btn active" href="session_3.html">3차시</a>
+      <a class="nav-btn" href="session_4.html">4차시</a>
+      <a class="nav-btn" href="session_5.html">5차시</a>
+      <a class="nav-btn" href="session_6.html">6차시</a>
+      <a class="nav-btn" href="session_7.html">7차시</a>
+      <a class="nav-btn" href="session_8.html">8차시</a>
+    </div>
+    <div class="nav-row sub">
+      <span class="nav-label">바로가기</span>
+      <a class="anchor" href="#intro">NotebookLM이란</a>
+      <a class="anchor" href="#analysis">실습A·사례분석</a>
+      <a class="anchor" href="#studio">스튜디오 5종</a>
+      <a class="anchor" href="#chatbot">실습B·편람 챗봇</a>
+      <a class="anchor" href="#docrule">공문서 표기법</a>
+      <a class="anchor" href="#check">기안문 점검</a>
+      <a class="anchor" href="#expand">학습자료 확장</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- NotebookLM이란 -->
+    <section class="card" id="intro">
+      <h2><span class="num">00</span>ChatGPT vs NotebookLM</h2>
+      <p class="lead">내가 올린 자료 '안에서만' 답하는 AI — 환각을 최소화하고 근거 페이지를 자동 인용합니다.</p>
+      <table class="table">
+        <thead><tr><th>구분</th><th>ChatGPT · Gemini</th><th>NotebookLM</th></tr></thead>
+        <tbody>
+          <tr><td><strong>답변 범위</strong></td><td>인터넷 전체</td><td>내가 올린 자료 안에서만</td></tr>
+          <tr><td><strong>환각 위험</strong></td><td>있음</td><td>최소화</td></tr>
+          <tr><td><strong>출처</strong></td><td>불명확</td><td>페이지 인용 자동</td></tr>
+        </tbody>
+      </table>
+      <div class="box note">
+        <span class="box-title">📌 오늘 만드는 것 2가지</span>
+        ① 여러 정책 사례 PDF로 <b>'청년 1인가구 지원 사업' 기획안</b> · ② 행정업무운영편람으로 <b>공문서 작성 챗봇</b>
+      </div>
+    </section>
+
+    <!-- 실습 A : 정책 사례 분석 -->
+    <section class="card" id="analysis">
+      <span class="phase">실습 A</span>
+      <h2><span class="num">01</span>정책 사례 분석 → 기획안</h2>
+      <p class="lead">여러 자치단체 정책 사례집 PDF를 자료로 올린 뒤, 아래 프롬프트를 순서대로 실행합니다. <br>주제: <b>유성구 청년 1인가구 지원 사업</b> (1인가구 2.8만 · 청년 비율 32.4% 대전 1위)</p>
+
+      <h3>① 사례 추출</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">사례 추출</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>이 자료들에서 청년 1인가구 또는
+청년 지원 관련 사례를 모두 찾아
+자치단체별로 정리해줘</pre>
+      </div>
+
+      <h3>② 비교 표 만들기</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">비교 표 만들기</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>찾은 사례를 표로 정리해줘.
+컬럼은 자치단체·사업명·지원 대상·지원 내용·예산·성과</pre>
+      </div>
+
+      <h3>③ 우리 구 맞춤 추천</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">우리 구 맞춤 추천</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>유성구 특성:
+- 1인가구 약 2만 8천 가구
+- 청년 인구 비율 32.4% (대전 5개 구 중 1위)
+- 1인가구 중 청년 비중 50% 이상
+- 카이스트·충남대·한밭대 밀집 대학가
+
+이 특성에 맞는 벤치마킹 사례 Top 3를 추천하고,
+각 사례를 유성구에 어떻게 변형 적용할지 설명해줘</pre>
+      </div>
+
+      <h3>④ 기획안 초안 작성</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">기획안 초안 작성</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>위 분석으로 '유성구 청년 1인가구 통합지원 사업'
+기획안 1페이지 초안 작성:
+
+1. 추진 배경
+2. 핵심 벤치마킹 사례 3개
+3. 사업 내용 (식생활·주거·안전·소통 4영역)
+4. 예상 예산 규모
+5. 기대 효과</pre>
+      </div>
+    </section>
+
+    <!-- 스튜디오 5종 -->
+    <section class="card" id="studio">
+      <h2><span class="num">02</span>스튜디오로 결과물 5종 만들기</h2>
+      <p class="lead">같은 자료로 보고서·마인드맵·인포그래픽·슬라이드·발표영상까지 한 번에.</p>
+
+      <h3>① 보고서 (Reports)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">스튜디오 · 보고서</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>이 자료들로 '청년 1인가구 통합지원 사업'
+정책 보고서 초안 작성.
+
+형식:
+1. 국내 우수사례 비교 분석 (3개 자치단체)
+2. 사업 추진 방안 (식생활·주거·안전·소통)
+3. 예산 계획   4. 기대 효과   5. 시행 일정</pre>
+      </div>
+
+      <h3>② 마인드맵 (Mind Map)</h3>
+      <div class="box note">
+        <span class="box-title">🖱 프롬프트 필요 없음 · 클릭 한 번</span>
+        자치단체별·주제별 자동 분류 → 사례 간 연결을 한눈에 → 노드 클릭 시 원문 출처로 이동.
+      </div>
+
+      <h3>③ 인포그래픽 (Infographics)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">스튜디오 · 인포그래픽</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>이 자료들의 청년 1인가구 우수사례 5개를
+비교 인포그래픽 1장으로.
+
+포함 요소:
+1. 자치단체명   2. 사업명   3. 지원 대상
+4. 지원 내용   5. 예산   6. 핵심 성과
+
+자료에 명시된 수치만 사용</pre>
+      </div>
+
+      <h3>④ 슬라이드 (Slide Decks)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">스튜디오 · 슬라이드</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>'청년 1인가구 지원 사업 기획안'
+10페이지 발표 슬라이드.
+
+구성:
+1. 표지   2. 정책 현황   3. 문제 인식
+4~6. 벤치마킹 사례 3개   7. 사업 방안
+8. 예산   9. 기대 효과   10. 시행 일정</pre>
+      </div>
+
+      <h3>⑤ 발표 영상 (Video Overview)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">스튜디오 · 발표 영상</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>'청년 1인가구 지원 사업' 5분 발표 영상.
+
+조건:
+1. 자료 속 자치단체별 사례를 시각화
+2. 정책 담당자 톤으로 내레이션
+3. 자료에 명시된 수치만 사용</pre>
+      </div>
+
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        모든 결과물은 초안입니다. 수치·출처는 원문과 대조해 사람이 최종 확인하세요.
+      </div>
+    </section>
+
+    <!-- 실습 B : 편람 챗봇 -->
+    <section class="card" id="chatbot">
+      <span class="phase">실습 B</span>
+      <h2><span class="num">03</span>행정업무운영편람 챗봇 만들기</h2>
+      <p class="lead">PDF Ctrl+F 검색(스크롤 30분) → 자연어 질문 30초. 편람 PDF를 자료로 올린 뒤, 먼저 <b>노트북 지침</b>을 설정합니다.</p>
+
+      <h3>노트북 지침 설정 <span class="muted">(챗봇 성격·답변 방식 미리 정의)</span></h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">노트북 지침 설정</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>당신은 신규·전입 공무원의 옆자리 선배입니다.
+행정업무운영편람을 근거로 친절하고 쉽게 답해주세요.
+
+답변 작성 원칙:
+1. 결론부터 먼저 작성하세요. 핵심 답을 첫 문장으로
+   제시한 뒤 상세 설명을 이어가세요.
+2. 답변마다 편람의 어느 부분을 참고했는지 페이지를
+   함께 알려주세요.
+3. 표·예시·단계로 정리할 수 있는 내용은
+   그렇게 정리해주세요.</pre>
+      </div>
+    </section>
+
+    <!-- 공문서 표기법 질문 -->
+    <section class="card" id="docrule">
+      <h2><span class="num">04</span>공문서 표기법 — 매번 헷갈리는 항목</h2>
+      <p class="lead">편람 챗봇에 그대로 물어보세요. 각 프롬프트 아래 <b>기대 답변</b>을 함께 적어 두었습니다.</p>
+
+      <h3>① 날짜 표기법</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">날짜 표기법</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>공문서에서 날짜는 어떻게 표기해야 해?
+'2026년 5월 25일'을 공문서 형식으로 쓰면
+어떻게 되고, 마침표를 빼먹으면 어떤 게 틀린 거야?</pre>
+      </div>
+      <p class="answer">기대 답변 — <b>2026. 5. 25.</b> (마지막 마침표 필수) · 점 사이 띄어쓰기</p>
+
+      <h3>② 시간 표기법</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">시간 표기법</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>공문서에서 시간 표기 규정 알려줘.
+'오후 3시 30분'을 공문서 형식으로 바꾸고,
+회의 시간을 '14:00~15:30'으로 쓰는 게 맞는지 알려줘</pre>
+      </div>
+      <p class="answer">기대 답변 — 24시간제 표기 · 콜론(:) 사용 · <b>15:30</b> 형식</p>
+
+      <h3>③ 금액 표기법</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">금액 표기법</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>공문서에서 금액 표기 규정 알려줘.
+'1,250,000원'을 공문서 형식으로 쓰면 어떻게 되고,
+한글 병기는 언제 어떻게 해야 해?</pre>
+      </div>
+      <p class="answer">기대 답변 — <b>금1,250,000원(금일백이십오만원)</b> · '금' 접두 + 한글 병기</p>
+
+      <h3>④ 항목 구분 기호 순서</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">항목 구분 기호 순서</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>공문서에서 항목을 나눌 때
+1, 2, 3 다음에 뭘 쓰는지 헷갈려.
+첫 번째부터 다섯 번째 단계까지
+어떤 기호를 어떤 순서로 쓰는지 표로 정리해줘</pre>
+      </div>
+      <p class="answer">기대 답변 — <b>1. → 가. → 1) → 가) → (1) → (가)</b> 순서로 자동 정리</p>
+    </section>
+
+    <!-- 기안문 자가 점검 -->
+    <section class="card" id="check">
+      <h2><span class="num">05</span>내 기안문 자가 점검</h2>
+      <p class="lead">아래 샘플 기안문에는 틀린 곳 5개(날짜·시간·금액·띄어쓰기·끝 표시)가 숨어 있습니다. 두 블록을 함께 붙여넣어 AI가 자동 검출하게 해보세요.</p>
+
+      <h3>① 점검할 기안문 (샘플)</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">샘플 기안문</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>수신 : 각부서장
+(경유)
+제목: 부서 워크샵 개최 알림
+
+1. 2026.5.25 우리 부서에서 워크샵을 개최하고자 합니다
+2. 일시 : 오전 10시부터
+3. 장소: 본관 3층 회의실
+4. 예산: 1,250,000원
+
+끝.</pre>
+      </div>
+
+      <h3>② 점검 프롬프트</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">기안문 점검</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>위 기안문을 행정업무운영편람 기준으로 검토해줘.
+
+잘못된 부분을 찾아서 어디가 어떻게 틀렸는지,
+편람 몇 페이지를 근거로 어떻게 고쳐야 하는지
+표로 정리해줘</pre>
+      </div>
+      <p class="answer">AI가 검출 — 날짜·시간·금액·띄어쓰기·끝 표시 5가지 오류를 근거 페이지와 함께 표로 정리</p>
+    </section>
+
+    <!-- 학습 자료 확장 -->
+    <section class="card" id="expand">
+      <h2><span class="num">06</span>편람을 학습 자료로 확장</h2>
+      <p class="lead">신규자 OJT 자료가 3분 만에 완성 — 플래시카드·퀴즈는 클릭만, 오디오는 한 줄 지시로 톤이 바뀝니다.</p>
+
+      <div class="grid3">
+        <div class="mcard"><div class="top"><b>플래시카드</b></div><div class="body">공문서 핵심 규정 카드 · 출근길 학습용 · <b>클릭만</b></div></div>
+        <div class="mcard"><div class="top"><b>퀴즈</b></div><div class="body">공문서 작성 자가 점검 · OJT 평가지로 활용 · <b>클릭만</b></div></div>
+        <div class="mcard"><div class="top"><b>오디오</b></div><div class="body">두 진행자 대화 형식 · 출퇴근길 청취용 · <b>맞춤설정 1줄</b></div></div>
+      </div>
+
+      <h3>오디오 맞춤설정 <span class="muted">(한 줄 지시로 톤·청취자가 바뀐다)</span></h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">오디오 맞춤설정</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>신규 공무원을 위한
+'공문서 작성 핵심 30분 강의' 톤으로 진행.
+
+조건:
+1. 두 진행자가 대화 형식
+2. 신규자가 헷갈리는 5가지(날짜·시간·금액·결재·협조전)
+3. 친근한 옆자리 선배 톤</pre>
+      </div>
+
+      <div class="box tip">
+        <span class="box-title">💡 활용</span>
+        출퇴근길 청취 · 신규자 OJT 보조 학습 자료로 그대로 활용할 수 있습니다.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · NotebookLM 시작하기</strong> · 3차시 강의안 &nbsp;|&nbsp; 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+<div id="toast">복사되었습니다 ✓</div>
+
+<script>
+  function copyPrompt(btn){
+    const pre = btn.closest('.prompt').querySelector('pre');
+    const text = pre.textContent;
+    const onSuccess = () => {
+      btn.textContent = '✓ 복사됨';btn.classList.add('done');
+      const toast = document.getElementById('toast');toast.classList.add('show');
+      setTimeout(() => {btn.textContent='복사';btn.classList.remove('done');toast.classList.remove('show');},2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    } else { fallbackCopy(); }
+    function fallbackCopy(){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');onSuccess();}catch(e){alert('복사에 실패했습니다. 직접 선택해 복사해 주세요.');}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>

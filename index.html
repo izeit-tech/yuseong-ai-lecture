@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유성구청 실무교육 · 생성형 AI 강의 자료실</title>
+<style>
+  :root{
+    --brand:#5b8fd6;
+    --brand-dark:#3f72bd;
+    --brand-soft:#eef4fb;
+    --ink:#1f2937;
+    --ink-soft:#6b7280;
+    --line:#e5e7eb;
+    --bg:#f7f8fa;
+    --card:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,
+                BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  /* 상단 상태바 */
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+
+  /* 히어로 헤더 */
+  .hero{padding:48px 0 36px;text-align:center;}
+  .hero .logo{
+    display:inline-block;font-weight:800;letter-spacing:-.5px;
+    color:var(--brand-dark);font-size:15px;margin-bottom:16px;
+    padding:6px 14px;background:var(--brand-soft);border-radius:999px;
+  }
+  .hero h1{margin:0 0 12px;font-size:34px;letter-spacing:-1px;line-height:1.25;}
+  .hero p{margin:0;color:var(--ink-soft);font-size:17px;}
+  .hero .meta{margin-top:14px;font-size:14px;color:var(--ink-soft);}
+  .hero .meta b{color:var(--brand-dark);}
+
+  /* 섹션 제목 */
+  .sec-title{display:flex;align-items:center;gap:10px;margin:14px 0 18px;}
+  .sec-title h2{font-size:20px;margin:0;letter-spacing:-.5px;}
+  .sec-title .dot{width:8px;height:20px;background:var(--brand);border-radius:3px;}
+  .sec-title .hint{margin-left:auto;font-size:13px;color:var(--ink-soft);}
+
+  main{padding:18px 0 60px;}
+  section{margin-bottom:42px;}
+
+  /* 차시 카드 그리드 */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
+  .session-card{
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:24px 22px;transition:.18s;position:relative;overflow:hidden;
+  }
+  .session-card::before{
+    content:"";position:absolute;left:0;top:0;width:100%;height:4px;
+    background:var(--brand);transform:scaleX(0);transform-origin:left;transition:.18s;
+  }
+  .session-card:hover{border-color:var(--brand);transform:translateY(-3px);
+    box-shadow:0 8px 24px rgba(91,143,214,.18);}
+  .session-card:hover::before{transform:scaleX(1);}
+  .session-card .badge{
+    align-self:flex-start;font-size:12px;font-weight:700;color:#fff;background:var(--brand);
+    padding:4px 11px;border-radius:999px;margin-bottom:14px;letter-spacing:.3px;
+  }
+  .session-card h3{margin:0 0 8px;font-size:19px;letter-spacing:-.5px;line-height:1.35;}
+  .session-card .desc{margin:0;font-size:14px;color:var(--ink-soft);flex:1;}
+  .session-card .go{
+    margin-top:16px;font-size:13.5px;font-weight:700;color:var(--brand-dark);
+    display:inline-flex;align-items:center;gap:5px;
+  }
+  .session-card .go::after{content:"→";transition:.18s;}
+  .session-card:hover .go::after{transform:translateX(4px);}
+
+  /* 다운로드 섹션 */
+  .dl-group{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:8px 22px;margin-bottom:18px;}
+  .dl-group .grp-title{font-size:14px;font-weight:700;color:var(--brand-dark);
+    padding:14px 0 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px;}
+  .dl-row{display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:13px 0;border-bottom:1px solid var(--line);}
+  .dl-row:last-child{border-bottom:none;}
+  .dl-row .fname{font-size:14.5px;}
+  .dl-row .fname .fmeta{color:var(--ink-soft);font-size:12.5px;margin-left:6px;}
+  .dl-btn{
+    flex-shrink:0;text-decoration:none;font-size:13px;font-weight:600;
+    color:#fff;background:var(--brand);border-radius:7px;padding:7px 16px;transition:.15s;white-space:nowrap;
+  }
+  .dl-btn:hover{background:var(--brand-dark);}
+  .dl-btn.disabled{background:#cbd5e1;pointer-events:none;}
+
+  .notice{font-size:13px;color:var(--ink-soft);background:var(--brand-soft);
+    border-radius:10px;padding:12px 16px;margin-top:6px;}
+
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);
+    font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+
+  @media(max-width:640px){
+    .hero h1{font-size:26px;}
+    .dl-row{flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<!-- 히어로 -->
+<header class="hero">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <h1>생성형 AI 실무 활용 강의 자료실</h1>
+    <p>차시를 선택하면 강의안으로 이동합니다.</p>
+    <p class="meta">강사 <b>김현경</b> · 전 4차시 · 2026.6.19</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- 목차: 차시 카드 -->
+    <section id="sessions">
+      <div class="sec-title">
+        <span class="dot"></span>
+        <h2>강의 목차</h2>
+        <span class="hint">카드를 누르면 해당 차시로 이동</span>
+      </div>
+
+      <div class="grid">
+        <a class="session-card" href="session_1.html">
+          <span class="badge">1차시</span>
+          <h3>생성형 AI가 바꾸는 직장 업무변화</h3>
+          <p class="desc">ChatGPT 등장 3년 5개월, AI는 어디까지 왔나 — 충격·폭발·진화·일상 흐름과 내 업무 자동화 실습.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_2.html">
+          <span class="badge">2차시</span>
+          <h3>제미나이 기초 활용법</h3>
+          <p class="desc">7가지 핵심 기능으로 업무 시간 절반 줄이기 — 모델 선택·Canvas·딥리서치·이미지 생성.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_3.html">
+          <span class="badge">3차시</span>
+          <h3>NotebookLM 시작하기</h3>
+          <p class="desc">내가 올린 자료만 보고 답하는 AI — 조례·매뉴얼 기반 출처 인용 챗봇 만들기.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_4.html">
+          <span class="badge">4차시</span>
+          <h3>유성구청 홍보 영상제작</h3>
+          <p class="desc">Gemini Gem · 챗GPT · Google Flow로 기획부터 홍보 영상까지 직접 제작.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_5.html">
+          <span class="badge">5차시</span>
+          <h3>정책 보고서 작성부터 PPT까지</h3>
+          <p class="desc">대덕특구 주제로 사전검토·심층조사·초안·비판검토, 보고서를 PPT·보도자료·SNS·카드뉴스 5종으로 변환.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_6.html">
+          <span class="badge">6차시</span>
+          <h3>AI 엑셀·데이터 자동화</h3>
+          <p class="desc">민원 데이터를 진단·전처리·시각화·대시보드까지 — 더티 데이터를 정리하고 피벗·차트로 한눈에.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_7.html">
+          <span class="badge">7차시</span>
+          <h3>바이브코딩으로 업무 앱 만들기</h3>
+          <p class="desc">Google AI Studio로 코딩 없이 한 문장으로 — 음성번역기·QR 생성기·뽀모도로 등 업무 앱 제작.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+
+        <a class="session-card" href="session_8.html">
+          <span class="badge">8차시</span>
+          <h3>Gem 활용 자동화</h3>
+          <p class="desc">반복 업무를 1초로 — 프롬프트 생성·텍스트 추출·민원 응답·회의록 등 나만의 맞춤형 GEM 비서 만들기.</p>
+          <span class="go">강의안 보기</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 강의 자료 다운로드 -->
+    <section id="downloads">
+      <div class="sec-title">
+        <span class="dot"></span>
+        <h2>강의 자료 다운로드</h2>
+      </div>
+
+      <!-- 그룹 1: 강의 슬라이드 -->
+      <div class="dl-group">
+        <div class="grp-title">📑 강의 슬라이드 (PDF)</div>
+        <div class="dl-row">
+          <span class="fname">1차시 — 생성형 AI가 바꾸는 직장 업무변화<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_1차시_유성구청_생성형 AI이해.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">2차시 — 제미나이 기초 활용법<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_2차시_유성구청_제미나이.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">3차시 — NotebookLM 시작하기<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_3차시_유성구청_노트북LM.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">4차시 — 유성구청 홍보 영상제작<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_4차시_유성구청_홍보영상.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">5차시 — 정책 보고서 작성부터 PPT까지<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_5차시_유성구청_보고서작성.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">6차시 — AI 엑셀·데이터 자동화<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_6차시_유성구청_데이터분석.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">7차시 — 바이브코딩으로 업무 앱 만들기<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_7차시_유성구청_바이브코딩.pdf" download>다운로드</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">8차시 — Gem 활용 자동화<span class="fmeta">PDF</span></span>
+          <a class="dl-btn" href="강의자료/26년6월19일_8차시_유성구청_Gem 활용.pdf" download>다운로드</a>
+        </div>
+      </div>
+
+      <!-- 그룹 2: 실습 파일 -->
+      <div class="dl-group">
+        <div class="grp-title">🗂 실습 파일</div>
+        <div class="dl-row">
+          <span class="fname">3차시 NotebookLM 실습 자료 (정책 사례집 모음)<span class="fmeta">PDF 모음</span></span>
+          <a class="dl-btn disabled" href="#" aria-disabled="true">준비 중</a>
+        </div>
+        <div class="dl-row">
+          <span class="fname">4차시 영상 실습 자료 (AI 프롬프트 핸드북 외)<span class="fmeta">PDF · 이미지</span></span>
+          <a class="dl-btn disabled" href="#" aria-disabled="true">준비 중</a>
+        </div>
+      </div>
+
+      <p class="notice">※ 다운로드 링크는 강의자료 폴더가 함께 있을 때 동작합니다. 실제 파일 경로가 정해지면 <code>href</code>를 교체하세요.</p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · 생성형 AI 실무 활용</strong> · 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6차시 · AI 엑셀·데이터 자동화 · 유성구청 실무교육</title>
+<style>
+  :root{
+    --brand:#5b8fd6;--brand-dark:#3f72bd;--brand-soft:#eef4fb;
+    --ink:#1f2937;--ink-soft:#6b7280;--line:#e5e7eb;--bg:#f7f8fa;--card:#ffffff;
+    --code-bg:#f3f4f6;--note:#eef4fb;--note-bd:#5b8fd6;--warn:#fff7ed;--warn-bd:#ea580c;
+    --tip:#fffbeb;--tip-bd:#d4a017;--ok:#16a34a;--nav-h:118px;--radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+  .header{padding:34px 0 26px;}
+  .header .logo{display:inline-block;font-weight:800;letter-spacing:-.5px;color:var(--brand-dark);font-size:15px;margin-bottom:14px;padding:5px 12px;background:var(--brand-soft);border-radius:999px;}
+  .header .eyebrow{color:var(--ink-soft);font-size:14px;font-weight:600;margin:0 0 6px;}
+  .header h1{margin:0 0 8px;font-size:30px;letter-spacing:-1px;line-height:1.25;}
+  .header .subtitle{margin:0 0 16px;color:var(--ink-soft);font-size:16px;}
+  .header .guide{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--brand-dark);background:var(--brand-soft);border:1px solid #dbe7f6;border-radius:8px;padding:8px 13px;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0;}
+  .nav-row.sub{padding-top:9px;border-top:1px dashed var(--line);}
+  .nav-btn{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:8px;transition:.15s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .nav-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .nav-btn.back{color:var(--ink-soft);}
+  .nav-divider{width:1px;height:20px;background:var(--line);margin:0 4px;}
+  .nav-label{font-size:12px;color:var(--ink-soft);font-weight:600;margin-right:4px;}
+  .anchor{text-decoration:none;font-size:13px;color:var(--ink-soft);padding:4px 10px;border-radius:6px;transition:.15s;}
+  .anchor:hover{background:var(--brand-soft);color:var(--brand-dark);}
+  main{padding:32px 0 60px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px;scroll-margin-top:calc(var(--nav-h) + 16px);}
+  .card > h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px;padding-bottom:12px;border-bottom:2px solid var(--line);}
+  .card > h2 .num{color:var(--brand);font-weight:800;margin-right:8px;}
+  .card > h3{font-size:15px;margin:20px 0 8px;color:var(--brand-dark);}
+  .card p{margin:0 0 14px;}.card p:last-child{margin-bottom:0;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .lead{font-size:15px;color:var(--ink-soft);margin:0 0 18px;}
+  .phase{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--brand-dark);padding:3px 10px;border-radius:6px;margin-bottom:6px;letter-spacing:.3px;}
+  .prompt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;background:#fff;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border-bottom:1px solid var(--line);padding:9px 14px;}
+  .prompt-head .label{font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px;}
+  .prompt-head .label::before{content:"▶";color:var(--brand);font-size:10px;}
+  .copy-btn{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:var(--brand);border:none;padding:6px 14px;border-radius:7px;transition:.15s;}
+  .copy-btn:hover{background:var(--brand-dark);}.copy-btn.done{background:var(--ok);}
+  .prompt pre{margin:0;padding:16px 18px;background:var(--code-bg);font-family:"SFMono-Regular",Consolas,"D2Coding","Menlo",monospace;font-size:13.5px;line-height:1.7;color:#111827;white-space:pre-wrap;word-break:break-word;}
+  .box{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;}
+  .box .box-title{font-weight:700;margin-bottom:4px;display:block;}
+  .box.note{background:var(--note);border-left:4px solid var(--note-bd);}
+  .box.warn{background:var(--warn);border-left:4px solid var(--warn-bd);}
+  .box.tip{background:var(--tip);border-left:4px solid var(--tip-bd);}
+  .table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .table th,.table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .table thead th{background:var(--brand);color:#fff;font-weight:700;}
+  .table tbody tr:nth-child(even){background:#fafbfc;}
+  .table tbody tr:last-child td{border-bottom:none;}
+  .table td strong{color:var(--brand-dark);}
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);background:#111827;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100;}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.header h1{font-size:24px;}.card{padding:22px 18px;}:root{--nav-h:150px;}}
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<header class="header">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <p class="eyebrow">실무교육 · 6차시 · 강사 김현경</p>
+    <h1>AI 엑셀·데이터 자동화</h1>
+    <p class="subtitle">민원 데이터 분석하기 · 진단 · 전처리 · 시각화 · 대시보드</p>
+    <span class="guide">💡 실습 프롬프트는 복사 버튼으로 붙여넣으세요</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="nav-btn back" href="index.html">← 목록으로</a>
+      <span class="nav-divider"></span>
+      <a class="nav-btn" href="session_1.html">1차시</a>
+      <a class="nav-btn" href="session_2.html">2차시</a>
+      <a class="nav-btn" href="session_3.html">3차시</a>
+      <a class="nav-btn" href="session_4.html">4차시</a>
+      <a class="nav-btn" href="session_5.html">5차시</a>
+      <a class="nav-btn active" href="session_6.html">6차시</a>
+      <a class="nav-btn" href="session_7.html">7차시</a>
+      <a class="nav-btn" href="session_8.html">8차시</a>
+    </div>
+    <div class="nav-row sub">
+      <span class="nav-label">바로가기</span>
+      <a class="anchor" href="#flow">흐름</a>
+      <a class="anchor" href="#diagnose">진단</a>
+      <a class="anchor" href="#clean">전처리</a>
+      <a class="anchor" href="#visual">시각화</a>
+      <a class="anchor" href="#dashboard">대시보드</a>
+      <a class="anchor" href="#filerule">파일 규칙</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- 흐름 -->
+    <section class="card" id="flow">
+      <h2><span class="num">00</span>4단계 흐름</h2>
+      <p class="lead">도구는 AI가 실행하고, 무엇을 할지 기준은 사람이 정합니다.</p>
+      <table class="table">
+        <thead><tr><th>단계</th><th>하는 일</th><th>사람이 정할 것</th></tr></thead>
+        <tbody>
+          <tr><td><strong>① 진단</strong></td><td>데이터에 어떤 문제가 있는지 찾는다</td><td>이게 진짜 문제인가</td></tr>
+          <tr><td><strong>② 전처리</strong></td><td>문제를 정한 규칙대로 깨끗하게 정리한다</td><td>어떤 기준으로 정리할까</td></tr>
+          <tr><td><strong>③ 시각화</strong></td><td>피벗으로 집계하고 차트로 그린다</td><td>무엇을 볼까</td></tr>
+          <tr><td><strong>④ 대시보드</strong></td><td>차트를 한 화면에 모아 한눈에 본다</td><td>누구에게 보일까</td></tr>
+        </tbody>
+      </table>
+      <div class="box note">
+        <span class="box-title">📌 더티 데이터 = 흙 묻은 채소</span>
+        "관평" · "관평 동" · "관평동" — 사람 눈엔 같은 동, 컴퓨터엔 서로 다른 3개. 이대로 집계하면 한 동이 세 조각으로 흩어집니다. (실습 데이터: 민원 85건 · 12개 항목)
+      </div>
+    </section>
+
+    <!-- 진단 -->
+    <section class="card" id="diagnose">
+      <span class="phase">STEP 1</span>
+      <h2><span class="num">01</span>진단 — 6가지 문제 유형</h2>
+      <p class="lead">AI가 빠르게 찾아주지만, 진짜 문제인지 판단은 사람 몫입니다.</p>
+      <table class="table">
+        <thead><tr><th>문제 유형</th><th>대표 사례</th></tr></thead>
+        <tbody>
+          <tr><td><strong>표기 이상</strong></td><td>관평 / 관평 동 / 관평동</td></tr>
+          <tr><td><strong>공백 섞임</strong></td><td>완료 / 완료␣␣ (끝에 빈칸)</td></tr>
+          <tr><td><strong>형식 불일치</strong></td><td>2026/04/16 · 46139 · 04/11/26</td></tr>
+          <tr><td><strong>결측치</strong></td><td>담당자 · 만족도 빈칸</td></tr>
+          <tr><td><strong>중복</strong></td><td>같은 민원번호 두 번</td></tr>
+          <tr><td><strong>이상치</strong></td><td>처리비용 9천만 원 (오입력)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>① 기본형 — 파일 올리고 이렇게만</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">진단 · 기본형</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>이건 우리 구청 4월 민원 데이터야.
+이 표에 데이터 품질 문제가 있는지 점검해줘.
+
+어떤 항목에 어떤 문제가 있는지, 예시랑 건수까지 알려줘.</pre>
+      </div>
+
+      <h3>② 구조형 — 더 정확하게</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">진단 · 구조형</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>넌 데이터 분석 전문가야.
+정리가 필요한 부분을 찾아줘.
+
+아래 6가지로 확인해줘.
+1) 표기 이상  2) 공백 섞임
+3) 형식 불일치  4) 결측치
+5) 중복  6) 이상치
+
+'항목 / 예시 / 건수'를 표로 정리해줘.</pre>
+      </div>
+    </section>
+
+    <!-- 전처리 -->
+    <section class="card" id="clean">
+      <span class="phase">STEP 2</span>
+      <h2><span class="num">02</span>전처리 — 원본 보존이 핵심</h2>
+      <p class="lead">규칙은 구체적으로 · 삭제보다 표시 · 원본은 절대 안 건드립니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">전처리 (파일 올린 뒤 입력)</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>[가장 중요 — 원본 보존]
+원본은 절대 수정하지 마.
+정리 결과는 '정리본' 새 시트로 만들고 원본·정리본 둘 다 있게.
+
+[정리 규칙]
+· 동: 11개 표준 동명 통일('기준_동' 기준)
+· 부서: '○○과'로 통일
+· 처리상태/채널 통일
+· 모든 공백 제거
+· 접수일: YYYY-MM-DD
+· 비용: 숫자만
+· 빈 담당자: '미배정'
+· 빈 값: '확인필요'
+· 중복 민원번호: 최신 1건만
+· 비용 5천만 원 초과: '검토필요' 표시 (삭제하지 말 것)
+
+[출력] 원본·정리본 시트가 있는 엑셀 + 무엇을 어떻게 고쳤는지 요약표</pre>
+      </div>
+
+      <h3>진행상황 md 정리 <span class="muted">(다음 단계로 넘기기)</span></h3>
+      <p class="muted">AI가 만든 파일은 사라질 수 있으니 꼭 내 컴퓨터에 저장하고, 맥락은 md로 넘깁니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">진행상황 md 정리</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>지금까지 진행한 작업을 다음 작업에 이어 쓸 수 있게
+'진행상황 md'로 정리해줘.
+
+· 데이터 개요 (무슨 데이터, 몇 건, 항목)
+· 전처리 기준 (우리가 정한 규칙들)
+· 완료한 단계 / 현재 단계 / 다음 단계
+· 다음 작업에서 AI가 알아야 할 주의사항
+
+대화 전체를 옮기지 말고, 다음 단계에 꼭 필요한
+핵심 결정사항만. md 파일로.</pre>
+      </div>
+    </section>
+
+    <!-- 시각화 -->
+    <section class="card" id="visual">
+      <span class="phase">STEP 3</span>
+      <h2><span class="num">03</span>시각화 — 피벗 + 차트</h2>
+      <p class="lead">차트 뒤에는 항상 '집계표(피벗)'가 있습니다. 비교는 막대그래프, 비율은 원그래프.</p>
+
+      <h3>① 피벗 추천받기</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">피벗 추천</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>첨부한 민원 데이터(정리본)로 인사이트를 뽑으려고 해.
+어떤 피벗테이블을 만들면 업무에 유용할지 5개 추천해줘.
+
+각 추천마다: 무엇을 알 수 있는지 / 행·값에 넣을 항목 / 어울리는 차트 종류</pre>
+      </div>
+      <p class="muted">추천 5선 (예시) — 동별 건수 · 유형별 건수 · 처리상태 비율 · 부서별 만족도 · 채널별 접수</p>
+
+      <h3>② 피벗 + 차트 만들기</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">시각화 (피벗+차트)</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>동별 건수 · 유형별 건수 · 처리상태 비율 · 부서별 만족도 ·
+채널별 민원건수 피벗테이블과 차트를 만들어줘.
+
+[규칙]
+· 정리본 데이터는 건드리지 말고, 목적별로 새 시트에 ('피벗_동별' 등 분리)
+· 각 피벗 옆에 어울리는 차트도 같이
+· 한글이 깨지지 않게 해줘
+· '확인필요'·'검토필요' 표시된 값은 평균·집계에서 빼줘
+· 차트마다 무슨 의미인지 한 줄 설명도
+
+[출력] 원본·정리본·피벗 시트가 모두 있는 엑셀 파일</pre>
+      </div>
+      <div class="box warn">
+        <span class="box-title">⚠ 품질 포인트</span>
+        <b>'한글 깨짐 방지' + '이상치 제외'</b> 두 줄이 결과 품질을 좌우합니다.
+      </div>
+    </section>
+
+    <!-- 대시보드 -->
+    <section class="card" id="dashboard">
+      <span class="phase">STEP 4</span>
+      <h2><span class="num">04</span>대시보드 — 한 화면에 모으기</h2>
+      <p class="lead">차트 이름을 박지 말 것 — '앞에서 만든 차트'로 열어둬야 누구에게나 작동합니다.</p>
+
+      <h3>① 엑셀 대시보드 시트</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">대시보드 · 엑셀 시트</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>지금까지 만든 피벗테이블과 차트를 모아 '대시보드' 시트를 만들어줘.
+
+[구성]
+· '대시보드' 새 시트에 앞에서 만든 차트들을 모아줘
+· 맨 위에 핵심 숫자 요약 (총 건수, 완료율, 평균 만족도)
+· 그 아래 앞서 제작한 차트 배치
+
+[규칙] 다른 시트는 그대로 / 한글 깨짐 방지 / 위=요약 아래=상세 / 색상 2~3가지</pre>
+      </div>
+
+      <h3>② 웹페이지(HTML) 대시보드</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">대시보드 · 웹페이지(HTML)</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>지금까지 만든 피벗테이블과 차트를 모아 '대시보드' html를 만들어줘.
+
+[구성]
+· 맨 위에 핵심 숫자 요약 (총 건수, 완료율, 평균 만족도)
+· 그 아래 앞서 제작한 차트 배치
+
+[규칙] 다른 시트는 그대로 / 한글 깨짐 방지 / 위=요약 아래=상세 / 색상 2~3가지</pre>
+      </div>
+    </section>
+
+    <!-- 파일 다루기 규칙 -->
+    <section class="card" id="filerule">
+      <h2><span class="num">05</span>파일 다루기 규칙</h2>
+      <p class="lead">올리기 1번 → 이어가기 → 받기 1번. AI 결과는 꼭 저장해 둡니다.</p>
+      <table class="table">
+        <thead><tr><th>상황</th><th>방법</th></tr></thead>
+        <tbody>
+          <tr><td><strong>진단 + 전처리</strong></td><td>파일 1회 올리고 같은 창에서 진행</td></tr>
+          <tr><td><strong>피벗 → 차트 → 대시보드</strong></td><td>한 흐름이라 같은 창에서 이어가기</td></tr>
+          <tr><td><strong>단계가 크게 바뀔 때</strong></td><td>새 창 + 정리본·md 다시 올리기</td></tr>
+          <tr><td><strong>대화가 길어 AI가 헤맬 때</strong></td><td>새 창으로 전환</td></tr>
+        </tbody>
+      </table>
+      <div class="box tip">
+        <span class="box-title">💡 마무리</span>
+        AI가 빠르게 해주지만, <b>무엇을 어떻게 할지 정하는 건 사람</b>입니다.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · AI 엑셀·데이터 자동화</strong> · 6차시 강의안 &nbsp;|&nbsp; 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+<div id="toast">복사되었습니다 ✓</div>
+
+<script>
+  function copyPrompt(btn){
+    const pre = btn.closest('.prompt').querySelector('pre');
+    const text = pre.textContent;
+    const onSuccess = () => {
+      btn.textContent = '✓ 복사됨';btn.classList.add('done');
+      const toast = document.getElementById('toast');toast.classList.add('show');
+      setTimeout(() => {btn.textContent='복사';btn.classList.remove('done');toast.classList.remove('show');},2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    } else { fallbackCopy(); }
+    function fallbackCopy(){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');onSuccess();}catch(e){alert('복사에 실패했습니다. 직접 선택해 복사해 주세요.');}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>

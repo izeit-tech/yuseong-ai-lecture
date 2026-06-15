@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4차시 · 유성구청 홍보 영상제작 · 유성구청 실무교육</title>
+<style>
+  :root{
+    --brand:#5b8fd6;--brand-dark:#3f72bd;--brand-soft:#eef4fb;
+    --ink:#1f2937;--ink-soft:#6b7280;--line:#e5e7eb;--bg:#f7f8fa;--card:#ffffff;
+    --code-bg:#f3f4f6;--note:#eef4fb;--note-bd:#5b8fd6;--warn:#fff7ed;--warn-bd:#ea580c;
+    --tip:#fffbeb;--tip-bd:#d4a017;--ok:#16a34a;--nav-h:118px;--radius:14px;
+    --shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  .statusbar{height:4px;background:linear-gradient(90deg,var(--brand),var(--brand-dark));}
+  .header{padding:34px 0 26px;}
+  .header .logo{display:inline-block;font-weight:800;letter-spacing:-.5px;color:var(--brand-dark);font-size:15px;margin-bottom:14px;padding:5px 12px;background:var(--brand-soft);border-radius:999px;}
+  .header .eyebrow{color:var(--ink-soft);font-size:14px;font-weight:600;margin:0 0 6px;}
+  .header h1{margin:0 0 8px;font-size:30px;letter-spacing:-1px;line-height:1.25;}
+  .header .subtitle{margin:0 0 16px;color:var(--ink-soft);font-size:16px;}
+  .header .guide{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--brand-dark);background:var(--brand-soft);border:1px solid #dbe7f6;border-radius:8px;padding:8px 13px;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .nav-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 0;}
+  .nav-row.sub{padding-top:9px;border-top:1px dashed var(--line);}
+  .nav-btn{text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:7px 14px;border-radius:8px;transition:.15s;white-space:nowrap;}
+  .nav-btn:hover{border-color:var(--brand);color:var(--brand-dark);}
+  .nav-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .nav-btn.back{color:var(--ink-soft);}
+  .nav-divider{width:1px;height:20px;background:var(--line);margin:0 4px;}
+  .nav-label{font-size:12px;color:var(--ink-soft);font-weight:600;margin-right:4px;}
+  .anchor{text-decoration:none;font-size:13px;color:var(--ink-soft);padding:4px 10px;border-radius:6px;transition:.15s;}
+  .anchor:hover{background:var(--brand-soft);color:var(--brand-dark);}
+  main{padding:32px 0 60px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px;scroll-margin-top:calc(var(--nav-h) + 16px);}
+  .card > h2{margin:0 0 8px;font-size:21px;letter-spacing:-.5px;padding-bottom:12px;border-bottom:2px solid var(--line);}
+  .card > h2 .num{color:var(--brand);font-weight:800;margin-right:8px;}
+  .card > h3{font-size:15px;margin:20px 0 8px;color:var(--brand-dark);}
+  .card p{margin:0 0 14px;}.card p:last-child{margin-bottom:0;}
+  .muted{color:var(--ink-soft);font-size:14px;}
+  .lead{font-size:15px;color:var(--ink-soft);margin:0 0 18px;}
+  .phase{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--brand-dark);padding:3px 10px;border-radius:6px;margin-bottom:6px;letter-spacing:.3px;}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:16px 0;}
+  .mcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .mcard .top{background:var(--brand-soft);padding:12px 16px;border-bottom:1px solid var(--line);}
+  .mcard .top b{font-size:15px;}
+  .mcard .body{padding:12px 16px;font-size:13.5px;color:var(--ink-soft);}
+  .prompt{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0;background:#fff;}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border-bottom:1px solid var(--line);padding:9px 14px;}
+  .prompt-head .label{font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px;}
+  .prompt-head .label::before{content:"▶";color:var(--brand);font-size:10px;}
+  .copy-btn{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:#fff;background:var(--brand);border:none;padding:6px 14px;border-radius:7px;transition:.15s;}
+  .copy-btn:hover{background:var(--brand-dark);}.copy-btn.done{background:var(--ok);}
+  .prompt pre{margin:0;padding:16px 18px;background:var(--code-bg);font-family:"SFMono-Regular",Consolas,"D2Coding","Menlo",monospace;font-size:13.5px;line-height:1.7;color:#111827;white-space:pre-wrap;word-break:break-word;}
+  .box{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:14.5px;}
+  .box .box-title{font-weight:700;margin-bottom:4px;display:block;}
+  .box.note{background:var(--note);border-left:4px solid var(--note-bd);}
+  .box.warn{background:var(--warn);border-left:4px solid var(--warn-bd);}
+  .box.tip{background:var(--tip);border-left:4px solid var(--tip-bd);}
+  .table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .table th,.table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+  .table thead th{background:var(--brand);color:#fff;font-weight:700;}
+  .table tbody tr:nth-child(even){background:#fafbfc;}
+  .table tbody tr:last-child td{border-bottom:none;}
+  .table td strong{color:var(--brand-dark);}
+  .steps{list-style:none;counter-reset:step;margin:16px 0;padding:0;}
+  .steps li{counter-increment:step;position:relative;padding:12px 0 12px 52px;border-bottom:1px solid var(--line);}
+  .steps li:last-child{border-bottom:none;}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:11px;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{display:block;font-size:15px;margin-bottom:2px;}.steps li span{color:var(--ink-soft);font-size:14px;}
+  .checklist{list-style:none;margin:16px 0;padding:0;}
+  .checklist li{position:relative;padding:11px 0 11px 30px;font-size:14.5px;border-bottom:1px solid var(--line);}
+  .checklist li:last-child{border-bottom:none;}
+  .checklist li::before{content:"✓";position:absolute;left:0;top:11px;color:var(--brand);font-weight:800;}
+  .checklist li b{color:var(--ink);}.checklist li .ex{color:var(--ink-soft);font-size:13.5px;}
+  footer{border-top:1px solid var(--line);background:#fff;color:var(--ink-soft);font-size:13px;text-align:center;padding:24px 0;}
+  footer strong{color:var(--ink);}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translate(-50%,20px);background:#111827;color:#fff;font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100;}
+  #toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.header h1{font-size:24px;}.card{padding:22px 18px;}:root{--nav-h:150px;}}
+</style>
+</head>
+<body>
+
+<div class="statusbar"></div>
+
+<header class="header">
+  <div class="wrap">
+    <span class="logo">유성구청 실무교육</span>
+    <p class="eyebrow">실무교육 · 4차시 · 강사 김현경</p>
+    <h1>유성구청 홍보 영상제작</h1>
+    <p class="subtitle">Gemini Gem · 챗GPT · Google Flow로 기획부터 영상까지</p>
+    <span class="guide">💡 실습 프롬프트는 복사 버튼으로 붙여넣으세요</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-row">
+      <a class="nav-btn back" href="index.html">← 목록으로</a>
+      <span class="nav-divider"></span>
+      <a class="nav-btn" href="session_1.html">1차시</a>
+      <a class="nav-btn" href="session_2.html">2차시</a>
+      <a class="nav-btn" href="session_3.html">3차시</a>
+      <a class="nav-btn active" href="session_4.html">4차시</a>
+      <a class="nav-btn" href="session_5.html">5차시</a>
+      <a class="nav-btn" href="session_6.html">6차시</a>
+      <a class="nav-btn" href="session_7.html">7차시</a>
+      <a class="nav-btn" href="session_8.html">8차시</a>
+    </div>
+    <div class="nav-row sub">
+      <span class="nav-label">바로가기</span>
+      <a class="anchor" href="#flow">워크플로우</a>
+      <a class="anchor" href="#step1">Step1·GEM</a>
+      <a class="anchor" href="#step2">Step2·캐릭터</a>
+      <a class="anchor" href="#step3">Step3·시나리오</a>
+      <a class="anchor" href="#step4">Step4·이미지</a>
+      <a class="anchor" href="#step5">Step5·영상</a>
+      <a class="anchor" href="#check">체크리스트</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <!-- 워크플로우 개요 -->
+    <section class="card" id="flow">
+      <h2><span class="num">00</span>공식 캐릭터 + AI = 24초 숏폼 CF</h2>
+      <p class="lead">외주 없이, 오늘 60분으로. 8초 × 3컷 = 24초 · 이미지 3장 + 영상 3개 자동 생성.</p>
+      <table class="table">
+        <thead><tr><th>단계</th><th>할 일</th><th>도구</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Step 1</strong></td><td>영상 가이드 GEM 만들기</td><td>챗GPT → Gem</td></tr>
+          <tr><td><strong>Step 2</strong></td><td>캐릭터 시트 만들기</td><td>챗GPT</td></tr>
+          <tr><td><strong>Step 3</strong></td><td>한 줄 입력 → 시나리오·프롬프트 자동</td><td>1단계 GEM</td></tr>
+          <tr><td><strong>Step 4</strong></td><td>이미지 3장 생성</td><td>챗GPT</td></tr>
+          <tr><td><strong>Step 5</strong></td><td>영상 3개 제작</td><td>Google Flow</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Step 1 -->
+    <section class="card" id="step1">
+      <span class="phase">STEP 1</span>
+      <h2><span class="num">01</span>영상 가이드 GEM 만들기</h2>
+      <p class="lead">아래 <b>GEM 시스템 프롬프트</b>를 그대로 복사해 Gemini 「Gem 만들기」에 붙여넣고, <code>AI_Prompt_Guide.docx</code>(미드저니 가이드)를 지식 파일로 업로드 → 저장합니다.</p>
+
+      <h3>GEM 시스템 프롬프트</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">GEM 시스템 프롬프트 (전체 복사)</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>너는 이미지·영상 생성 프롬프트 전문 가이드 챗봇이다.
+
+사용자가 원하는 이미지나 영상 콘셉트를 입력하면,
+AI 이미지·영상 생성 도구에서 바로 사용할 수 있도록
+고품질 프롬프트를 작성한다. 이미지 생성아님
+
+기본 역할:
+- 이미지 프롬프트를 한국어 버전과 영어 버전으로 각각 작성한다.
+- 사용자가 요청하면, 이미지를 영상으로 변환하기 위한
+  애니메이션 프롬프트도 한국어 버전과 영어 버전으로 작성한다.
+- 첨부된 미드저니 이미지 제작 가이드를 참고하여
+  프롬프트의 구조와 표현을 정리한다.
+- 특정 도구 문법이 부족하더라도, 씨드림·클링AI·미드저니·기타
+  이미지/영상 AI에서 공통적으로 활용 가능한 방식으로 작성한다.
+
+프롬프트 작성 기준:
+- 주제, 캐릭터/대상, 배경, 구도, 스타일, 조명, 색감, 분위기,
+  카메라 시점, 품질 표현을 포함한다.
+- 불필요하게 긴 설명은 줄이고, 생성 AI가 이해하기 쉬운
+  구체적인 묘사로 작성한다.
+- 캐릭터 이미지가 첨부된 경우, 캐릭터의 외형·색상·비율은
+  유지하도록 안내하고, 프롬프트에는 주로 동작·표정·배경·구도
+  중심으로 작성한다.
+- 사용자가 원하는 비율, 스타일, 용도, 분위기, 장면 수가
+  불명확하면 1~3개의 짧은 질문을 먼저 한다.
+- 사용자가 "바로 만들어줘", "알아서 해줘"라고 하면
+  합리적으로 추정하여 완성본을 제시한다.
+
+출력 형식:
+
+[이미지 프롬프트 - 한국어]
+복사해서 바로 사용할 수 있는 한 문단 프롬프트
+
+[Image Prompt - English]
+A copy-ready one-paragraph prompt in English
+
+사용자가 영상 프롬프트를 요청한 경우 추가 출력:
+
+[애니메이션 프롬프트 - 한국어]
+카메라 움직임, 캐릭터 동작, 장면 전환, 표정 변화,
+분위기, 영상 길이를 포함한 한 문단 프롬프트
+
+[Animation Prompt - English]
+A copy-ready one-paragraph animation prompt in English
+
+[네거티브 프롬프트]
+깨짐, 왜곡, 손가락 오류, 흐림, 저화질, 비율 오류,
+불필요한 텍스트, 로고, 워터마크 등 제외할 요소를 작성한다.
+
+주의사항:
+- 사용자가 요청하기 전에는 이미지를 직접 생성하지 않는다.
+- 프롬프트만 작성한다.
+- 결과는 복사하기 쉽도록 깔끔하게 정리한다.
+- 사용자의 설명이 부족하면 무조건 거절하지 말고,
+  부족한 정보를 질문하거나 합리적으로 보완한다.
+- 한국어 표현은 자연스럽고 실무자가 바로 사용할 수 있게 작성한다.
+
+- 사용자가 명시적으로 요청하기 전까지는 이미지 절대 생성하지 말 것
+- 출력 순서 고정 :
+  시나리오 → 이미지 프롬프트 → 영상 프롬프트
+- 한국어·영어 2개 세트로 묶어서 출력
+- 첨부 가이드 문서의 키워드 사전을 적극 활용</pre>
+      </div>
+
+      <div class="box note">
+        <span class="box-title">📌 Gem 등록 순서</span>
+        ① Gemini 좌측 「Gem 만들기」 → ② 위 시스템 프롬프트 붙여넣기 → ③ <code>AI_Prompt_Guide.docx</code> 지식 업로드 → ④ 미리보기 테스트 후 저장
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="card" id="step2">
+      <span class="phase">STEP 2</span>
+      <h2><span class="num">02</span>유성이 캐릭터 시트 만들기</h2>
+      <p class="lead">공식 마스코트 '유성이' 이미지를 챗GPT에 학습시킨 뒤, 모든 컷에서 외형이 일관되도록 레퍼런스 시트를 만듭니다.</p>
+
+      <h3>① 캐릭터 학습 <span class="muted">(공식 이미지 첨부 후)</span></h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">캐릭터 학습</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>우리 구 공식 캐릭터 학습해줘.
+
+[유성이]  유성구청 대표 마스코트
+
+지금부터 모든 이미지 생성 요청에서
+캐릭터의 외형·색상·비율을 동일하게 유지해줘.
+캐릭터를 한 화면에 함께 배치할 수 있도록 학습해줘.</pre>
+      </div>
+
+      <h3>② 레퍼런스 시트 요청</h3>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">레퍼런스 시트</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>방금 학습한 유성이의
+캐릭터 레퍼런스 시트를 각각 만들어줘.
+
+조건:
+- 정면 / 측면 / 후면 / 표정 16종
+  (웃음 · 진지 · 놀람 · 인사)
+- 배경 없는 흰색
+- 16:9 비율
+- 고해상도</pre>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="card" id="step3">
+      <span class="phase">STEP 3</span>
+      <h2><span class="num">03</span>GEM과 상의하여 시나리오·프롬프트 생성</h2>
+      <p class="lead">1단계에서 만든 GEM에 한 줄 입력하면 시나리오 → 이미지 프롬프트 → 영상 프롬프트가 한 번에 나옵니다.</p>
+      <div class="prompt">
+        <div class="prompt-head"><span class="label">시나리오·프롬프트 생성</span><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+        <pre>유성구청 홍보용 21초 CF 영상을 만들려고 해.
+7초 × 3컷 구성으로 시나리오, 이미지 프롬프트,
+애니메이션 프롬프트를 모두 한국어로 작성해줘.
+캐릭터는 내가 업로드한 이미지를 사용할 예정이니
+외형, 의상, 얼굴 등 캐릭터 묘사는 하지 말고
+"업로드한 캐릭터"로만 표기해줘.
+프롬프트에는 캐릭터의 동작, 표정, 카메라 연출, 배경,
+조명, 분위기만 작성하고 캐릭터의 일관성이 유지되도록 해줘.
+유성온천, 과학도시, 자연환경, 가족친화도시 등
+유성구의 매력을 반영해서 밝고 친근한
+공공기관 홍보영상 스타일로 구성해줘.
+캐릭터의 일관성을 위해서 올려준 이미지 변형이
+없어야 한다는 문구가 들어가면 좋겠어.</pre>
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section class="card" id="step4">
+      <span class="phase">STEP 4</span>
+      <h2><span class="num">04</span>GPT로 이미지 3장 생성</h2>
+      <p class="lead">Step 3에서 받은 이미지 프롬프트 3개를 챗GPT에 순서대로 입력합니다.</p>
+      <div class="grid3">
+        <div class="mcard"><div class="top"><b>캐릭터 일관성</b></div><div class="body">매 요청마다 「학습한 유성이로」 명시</div></div>
+        <div class="mcard"><div class="top"><b>비율·해상도</b></div><div class="body">16:9 비율 · 고해상도 · 영상용 품질</div></div>
+        <div class="mcard"><div class="top"><b>변형 시 재요청</b></div><div class="body">다르게 나오면 레퍼런스 시트와 다시 비교 요청</div></div>
+      </div>
+    </section>
+
+    <!-- Step 5 -->
+    <section class="card" id="step5">
+      <span class="phase">STEP 5</span>
+      <h2><span class="num">05</span>Google Flow로 영상 제작</h2>
+      <p class="lead">이미지 3장 + 영상 프롬프트 3개 → 8초 영상 3개 (Flow 5컷까지 가능).</p>
+      <ol class="steps">
+        <li><b>Flow 진입</b><span>Google Flow 로그인</span></li>
+        <li><b>이미지 업로드</b><span>씬 1·2·3 각각 업로드</span></li>
+        <li><b>프롬프트 입력</b><span>Step 3 영상 프롬프트(대사 포함) 투입</span></li>
+        <li><b>음성 선택</b><span>캐릭터별 남·여 톤 구분</span></li>
+        <li><b>다운로드</b><span>8초 × 3컷 mp4 저장</span></li>
+      </ol>
+      <div class="box warn">
+        <span class="box-title">⚠ 주의</span>
+        외부 공개 전 내용·저작권을 확인하세요. 캐릭터·로고 등 공식 자산 사용 시 내부 규정을 따릅니다.
+      </div>
+    </section>
+
+    <!-- 체크리스트 -->
+    <section class="card" id="check">
+      <h2><span class="num">06</span>결과물 체크리스트</h2>
+      <ul class="checklist">
+        <li><b>영상 가이드 GEM</b> — <span class="ex">가이드 파일 업로드 + 시스템 프롬프트 등록</span></li>
+        <li><b>캐릭터 레퍼런스 시트</b> — <span class="ex">유성이·유온이 2종 (정면·측면·표정)</span></li>
+        <li><b>3컷 시나리오·프롬프트</b> — <span class="ex">이미지·영상·네거티브 한국어·영어 세트</span></li>
+        <li><b>GPT 이미지 3장</b> — <span class="ex">캐릭터 일관성 유지 · 16:9 고해상도</span></li>
+        <li><b>Flow 영상 3개</b> — <span class="ex">대사·BGM 포함 · 8초 × 3컷 = 24초 mp4</span></li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>유성구청 실무교육 · 유성구청 홍보 영상제작</strong> · 4차시 강의안 &nbsp;|&nbsp; 강사 김현경 &nbsp;|&nbsp; © 2026
+  </div>
+</footer>
+
+<div id="toast">복사되었습니다 ✓</div>
+
+<script>
+  function copyPrompt(btn){
+    const pre = btn.closest('.prompt').querySelector('pre');
+    const text = pre.textContent;
+    const onSuccess = () => {
+      btn.textContent = '✓ 복사됨';btn.classList.add('done');
+      const toast = document.getElementById('toast');toast.classList.add('show');
+      setTimeout(() => {btn.textContent='복사';btn.classList.remove('done');toast.classList.remove('show');},2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    } else { fallbackCopy(); }
+    function fallbackCopy(){
+      const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand('copy');onSuccess();}catch(e){alert('복사에 실패했습니다. 직접 선택해 복사해 주세요.');}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>
