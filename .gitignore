@@ -6,3 +6,6 @@
 # macOS
 .DS_Store
 **/.DS_Store
+
+# 로컬 작업 메모 (깃 제외)
+작업노트.md
